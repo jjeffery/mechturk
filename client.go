@@ -47,6 +47,7 @@ func (c *Client) GetAccountBalance(request *GetAccountBalanceRequest) (*GetAccou
 	return response, nil
 }
 
+// CreateHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html.
 func (c *Client) CreateHIT(request *CreateHITRequest) (*CreateHITResponse, error) {
 	response := new(CreateHITResponse)
 	err := c.call("CreateHIT", request, response)

@@ -211,6 +211,8 @@ const (
 	TimePeriodLifeToDate TimePeriod = "LifeToDate"
 )
 
+// CreateHITResponse is the output from CreateHIT, which is documented at
+// http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html.
 type CreateHITResponse struct {
 	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
 	HIT              []*HIT            `xml:"HIT,omitempty"`
@@ -615,6 +617,8 @@ type HITLayoutParameter struct {
 	Value string `xml:"Value,omitempty"`
 }
 
+// CreateHITRequest is the input to CreateHIT, which is documented at
+// http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html.
 type CreateHITRequest struct {
 	HITTypeId                   string                      `xml:"HITTypeId,omitempty"`
 	MaxAssignments              int32                       `xml:"MaxAssignments,omitempty"`
