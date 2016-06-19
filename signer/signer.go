@@ -4,7 +4,7 @@ package signer
 
 import (
 	"crypto/hmac"
-	"crypto/sha256"
+	"crypto/sha1"
 	"encoding/base64"
 )
 
@@ -20,7 +20,7 @@ func New(key string) Signer {
 // Sign returns a signature based on the service, operation and
 // timestamp.
 func (s Signer) Sign(service, operation, timestamp string) string {
-	hash := hmac.New(sha256.New, []byte(s))
+	hash := hmac.New(sha1.New, []byte(s))
 	hash.Write([]byte(service))
 	hash.Write([]byte(operation))
 	hash.Write([]byte(timestamp))

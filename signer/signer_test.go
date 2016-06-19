@@ -17,7 +17,7 @@ func TestSign(t *testing.T) {
 			service:   "MechanicalTurk",
 			operation: "CreateHIT",
 			timestamp: "2099-12-31T23:59:59Z",
-			signature: "JV1Si7RZLNwczfT/jzfS8fr8dfEtkxrFmxKRoSoxaVk=",
+			signature: "X61veKci2T/0CRkrrAwkFKdd/BU=",
 		},
 	}
 	for _, tt := range tests {
