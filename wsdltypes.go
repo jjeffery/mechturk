@@ -3,6 +3,10 @@ package mturk
 // NOTE: the types in this file were initally generated
 // using gowsdl (github.com/hooklift/gowsdl). The file has,
 // however, been extensively hand-edited.
+//
+// * Operations removed
+// * Namespaces removed
+// * Arrays changed to scalars where only one item is possible
 
 import (
 	"time"
@@ -388,8 +392,8 @@ type UpdateQualificationTypeResponse struct {
 }
 
 type GetAccountBalanceResponse struct {
-	OperationRequest        *OperationRequest          `xml:"OperationRequest,omitempty"`
-	GetAccountBalanceResult []*GetAccountBalanceResult `xml:"GetAccountBalanceResult,omitempty"`
+	OperationRequest        *OperationRequest        `xml:"OperationRequest,omitempty"`
+	GetAccountBalanceResult *GetAccountBalanceResult `xml:"GetAccountBalanceResult,omitempty"`
 }
 
 type GetRequesterStatisticResponse struct {
