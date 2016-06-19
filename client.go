@@ -30,7 +30,7 @@ func (c *Client) call(operation string, request interface{}, response interface{
 	if err != nil {
 		return errors.Wrap(err, operation)
 	}
-	soap := soap.NewClient(c.Config.getEndpoint(), false, nil)
+	soap := soap.NewClient(c.Config.getEndpoint())
 	soap.Logger = c.Config.Logger
 	if err := soap.Call(soapAction, payload, response); err != nil {
 		return errors.Wrap(err, operation)

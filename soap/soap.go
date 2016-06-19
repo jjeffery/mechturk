@@ -3,40 +3,26 @@ package soap
 
 import (
 	"bytes"
-	"crypto/tls"
 	"encoding/xml"
 	"io/ioutil"
 	"log"
-	"net"
 	"net/http"
-	"time"
 )
 
-var timeout = time.Duration(30 * time.Second)
-
-func dialTimeout(network, addr string) (net.Conn, error) {
-	return net.DialTimeout(network, addr, timeout)
-}
-
+// Envelope is for serializing SOAP envelopes.
 type Envelope struct {
 	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Envelope"`
-
-	Body Body
+	Body    Body
 }
 
-type Header struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Header"`
-
-	Header interface{}
-}
-
+// Body is for serializing the body of SOAP envelopes.
 type Body struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Body"`
-
+	XMLName xml.Name    `xml:"http://schemas.xmlsoap.org/soap/envelope/ Body"`
 	Fault   *Fault      `xml:",omitempty"`
 	Content interface{} `xml:",omitempty"`
 }
 
+// Fault is for serializing SOAP faults.
 type Fault struct {
 	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Fault"`
 
@@ -46,16 +32,11 @@ type Fault struct {
 	Detail string `xml:"detail,omitempty"`
 }
 
-type BasicAuth struct {
-	Login    string
-	Password string
-}
-
+// Client is a SOAP client.
 type Client struct {
 	Logger *log.Logger
 	url    string
 	tls    bool
-	auth   *BasicAuth
 }
 
 func (b *Body) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
@@ -112,22 +93,16 @@ func (f *Fault) Error() string {
 	return f.String
 }
 
-func NewClient(url string, tls bool, auth *BasicAuth) *Client {
+func NewClient(url string) *Client {
 	return &Client{
-		url:  url,
-		tls:  tls,
-		auth: auth,
+		url: url,
 	}
 }
 
 func (s *Client) Call(soapAction string, request, response interface{}) error {
-	envelope := Envelope{
-	//Header:        SoapHeader{},
-	}
-
+	envelope := Envelope{}
 	envelope.Body.Content = request
 	buffer := new(bytes.Buffer)
-
 	encoder := xml.NewEncoder(buffer)
 	if s.Logger != nil {
 		encoder.Indent("    ", "    ")
@@ -149,26 +124,16 @@ func (s *Client) Call(soapAction string, request, response interface{}) error {
 	if err != nil {
 		return err
 	}
-	if s.auth != nil {
-		req.SetBasicAuth(s.auth.Login, s.auth.Password)
-	}
 
 	req.Header.Add("Content-Type", "text/xml; charset=\"utf-8\"")
 	if soapAction != "" {
 		req.Header.Add("SOAPAction", soapAction)
 	}
 
-	req.Header.Set("User-Agent", "gowsdl/0.1")
+	req.Header.Set("User-Agent", "go-mturk/0.1")
 	req.Close = true
 
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: s.tls,
-		},
-		Dial: dialTimeout,
-	}
-
-	client := &http.Client{Transport: tr}
+	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
 		return err
