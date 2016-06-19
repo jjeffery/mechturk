@@ -1,9 +1,13 @@
 package mturk
 
 import (
-	"log"
 	"github.com/jjeffery/mturk/credentials"
+	"log"
 )
+
+// DefaultConfig is the default configuration used if not
+// explicitly specified.
+var DefaultConfig = &Config{}
 
 // A Config provides configuration for AWS Mechanical Turk clients.
 type Config struct {
@@ -12,15 +16,62 @@ type Config struct {
 	// variables and the shared credential file.
 	Credentials *credentials.Credentials
 
-	// Endpoint for accessing Mechanical Turk.
-	Endpoint *string
-
 	// Sandbox indicates whether to use the AWS Mechanical Turk Sandbox.
 	// If Endpoint is set, then it overrides this setting.
 	Sandbox *bool
 
+	// Endpoint for accessing Mechanical Turk. If set, overrides
+	// the Sandbox setting.
+	Endpoint *string
+
 	// Logger for diagnostics
 	Logger *log.Logger
+}
+
+// Clone returns a deep copy of the Config.
+func (c *Config) Clone() *Config {
+	if c == nil {
+		return &Config{}
+	}
+	clone := *c
+	return &clone
+}
+
+// Merge returns a deep copy of the config merged with
+// the other config.
+func (c *Config) Merge(other *Config) *Config {
+	merged := c.Clone()
+	if other != nil {
+		if other.Credentials != nil {
+			merged.Credentials = other.Credentials
+		}
+		if other.Endpoint != nil {
+			merged.Endpoint = other.Endpoint
+		}
+		if other.Sandbox != nil {
+			merged.Sandbox = other.Sandbox
+		}
+		if other.Logger != nil {
+			merged.Logger = other.Logger
+		}
+	}
+	return merged
+}
+
+// WithCredentials returns a copy of the config with the
+// credentials set.
+func (c *Config) WithCredentials(cred *credentials.Credentials) *Config {
+	c2 := c.Clone()
+	c2.Credentials = cred
+	return c2
+}
+
+// WithSandbox returns a copy of the config with the sandbox
+// setting.
+func (c *Config) WithSandbox(sandbox bool) *Config {
+	c2 := c.Clone()
+	c2.Sandbox = &sandbox
+	return c2
 }
 
 // getEndpoint returns the URL for sending requests to.

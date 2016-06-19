@@ -52,9 +52,10 @@ type BasicAuth struct {
 }
 
 type Client struct {
-	url  string
-	tls  bool
-	auth *BasicAuth
+	Logger *log.Logger
+	url    string
+	tls    bool
+	auth   *BasicAuth
 }
 
 func (b *Body) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
@@ -128,7 +129,9 @@ func (s *Client) Call(soapAction string, request, response interface{}) error {
 	buffer := new(bytes.Buffer)
 
 	encoder := xml.NewEncoder(buffer)
-	//encoder.Indent("  ", "    ")
+	if s.Logger != nil {
+		encoder.Indent("    ", "    ")
+	}
 
 	if err := encoder.Encode(envelope); err != nil {
 		return err
@@ -138,7 +141,9 @@ func (s *Client) Call(soapAction string, request, response interface{}) error {
 		return err
 	}
 
-	log.Println(buffer.String())
+	if s.Logger != nil {
+		s.Logger.Println("SOAP request:", "\n", buffer.String())
+	}
 
 	req, err := http.NewRequest("POST", s.url, buffer)
 	if err != nil {
@@ -175,16 +180,29 @@ func (s *Client) Call(soapAction string, request, response interface{}) error {
 		return err
 	}
 	if len(rawbody) == 0 {
-		log.Println("empty response")
+		if s.Logger != nil {
+			s.Logger.Println("SOAP response: empty")
+		}
 		return nil
 	}
 
-	log.Println(string(rawbody))
 	respEnvelope := new(Envelope)
 	respEnvelope.Body = Body{Content: response}
 	err = xml.Unmarshal(rawbody, respEnvelope)
 	if err != nil {
+		if s.Logger != nil {
+			s.Logger.Println("SOAP response:", err, ":\n", string(rawbody))
+		}
 		return err
+	}
+
+	if s.Logger != nil {
+		buffer = new(bytes.Buffer)
+		encoder := xml.NewEncoder(buffer)
+		encoder.Indent("    ", "    ")
+		_ = encoder.Encode(envelope)
+		_ = encoder.Flush()
+		s.Logger.Println("SOAP response:", "\n", buffer.String())
 	}
 
 	fault := respEnvelope.Body.Fault

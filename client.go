@@ -5,38 +5,33 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Client is an AWS Mechanical Turk Requester client.
 type Client struct {
 	Config *Config
 }
 
-func NewClient(config *Config) *Client {
-	if config == nil {
-		config = &Config{}
+// NewClient returns a new AWS Mechanical Turk Requester client.
+func NewClient(configs ...*Config) *Client {
+	config := DefaultConfig.Clone()
+	for _, c := range configs {
+		config = config.Merge(c)
 	}
 	return &Client{
 		Config: config,
 	}
 }
 
-func (c *Client) newPayload(operation string, request interface{}) (*requestPayload, error) {
-	creds, err := c.Config.getCredentials().Get()
-	if err != nil {
-		// TODO: wrap error
-		return nil, err
-	}
-	return newPayload(operation, request, creds), nil
-}
-
-func (c *Client) newSoapClient() *soap.Client {
-	return soap.NewClient(c.Config.getEndpoint(), false, nil)
-}
-
 func (c *Client) call(operation string, request interface{}, response interface{}) error {
-	payload, err := c.newPayload(operation, request)
+	creds, err := c.Config.getCredentials().Get()
 	if err != nil {
 		return errors.Wrap(err, operation)
 	}
-	soap := c.newSoapClient()
+	payload := newPayload(operation, request, creds)
+	if err != nil {
+		return errors.Wrap(err, operation)
+	}
+	soap := soap.NewClient(c.Config.getEndpoint(), false, nil)
+	soap.Logger = c.Config.Logger
 	if err := soap.Call(soapAction, payload, response); err != nil {
 		return errors.Wrap(err, operation)
 	}
