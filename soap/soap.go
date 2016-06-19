@@ -197,12 +197,9 @@ func (s *Client) Call(soapAction string, request, response interface{}) error {
 	}
 
 	if s.Logger != nil {
-		buffer = new(bytes.Buffer)
-		encoder := xml.NewEncoder(buffer)
-		encoder.Indent("    ", "    ")
-		_ = encoder.Encode(envelope)
-		_ = encoder.Flush()
-		s.Logger.Println("SOAP response:", "\n", buffer.String())
+		s.Logger.Printf("SOAP response, HTTP status=%s:\n%s",
+			res.Status,
+			string(rawbody))
 	}
 
 	fault := respEnvelope.Body.Fault
