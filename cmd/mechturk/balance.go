@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"log"
 
-	"github.com/jjeffery/mturk"
+	"github.com/aws/aws-sdk-go/aws/awsutil"
+	mechturk "github.com/jjeffery/mechturk"
 	"github.com/spf13/cobra"
 )
 
@@ -13,28 +14,22 @@ type balanceOpts struct {
 }
 
 func (opts *balanceOpts) Run(cmd *cobra.Command, args []string) {
-	client := mturk.NewClient(nil)
-	resp, err := client.GetAccountBalance(&mturk.GetAccountBalanceRequest{
-		ResponseGroup: []string{"Minimal", "Request"},
+	client := mechturk.NewClient(nil)
+	resp, err := client.GetAccountBalance(&mechturk.GetAccountBalanceRequest{
+		ResponseGroup: getResponseGroups(),
 	})
 	if err != nil {
-		fmt.Println("cannot get account balance:", err)
-		os.Exit(1)
+		log.Fatal("error: ", err)
 	}
 	result := resp.GetAccountBalanceResult
-	if result.AvailableBalance != nil {
-		fmt.Printf("available: %v %s (%s)", result.AvailableBalance.Amount, result.AvailableBalance.CurrencyCode, result.AvailableBalance.FormattedPrice)
-	}
-	if result.OnHoldBalance != nil {
-		fmt.Printf("on hold: %v %s (%s)", result.OnHoldBalance.Amount, result.OnHoldBalance.CurrencyCode, result.OnHoldBalance.FormattedPrice)
-	}
+	fmt.Println(awsutil.Prettify(result))
 }
 
 func init() {
 	opts := &balanceOpts{}
 	cmd := &cobra.Command{
-		Use:     "balance",
-		Aliases: []string{"bal"},
+		Use:     "get-account-balance",
+		Aliases: []string{"balance", "bal"},
 		Short:   "get account balance",
 		Run:     opts.Run,
 		PreRun:  applyGlobalOptions,

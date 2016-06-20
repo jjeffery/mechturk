@@ -1,7 +1,7 @@
 package mturk
 
 import (
-	"github.com/jjeffery/mturk/soap"
+	"github.com/jjeffery/mechturk/soap"
 	"github.com/pkg/errors"
 )
 

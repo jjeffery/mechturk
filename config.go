@@ -1,7 +1,7 @@
 package mturk
 
 import (
-	"github.com/jjeffery/mturk/credentials"
+	"github.com/jjeffery/mechturk/credentials"
 	"log"
 )
 

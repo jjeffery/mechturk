@@ -4,8 +4,8 @@ import (
 	"encoding/xml"
 	"time"
 
-	"github.com/jjeffery/mturk/credentials"
-	"github.com/jjeffery/mturk/signer"
+	"github.com/jjeffery/mechturk/credentials"
+	"github.com/jjeffery/mechturk/signer"
 )
 
 // Version is the protocol version supported by this package.
