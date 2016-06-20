@@ -8,6 +8,7 @@ go:
 
 install:
   - go get github.com/aws/aws-sdk-go/aws/awsutil
+  - go get github.com/go-ini/ini
   - go get github.com/pkg/errors
   - go get github.com/spf13/cobra
   - go get github.com/stretchr/testify/assert
