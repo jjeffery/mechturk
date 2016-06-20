@@ -1,12 +1,19 @@
-package mturk
+package mechturk
 
-// NOTE: the types in this file were initally generated
+// NOTE: the types in this file were initially generated
 // using gowsdl (github.com/hooklift/gowsdl). The file has,
 // however, been extensively hand-edited.
 //
 // * Operations removed
 // * Namespaces removed
+// * Comments added for Godoc
 // * Arrays changed to scalars where only one item is possible
+//   for example, GetAccountBalanceResponse contains only one
+//   result where the auto-generated WSDL allows for multiples.
+//
+// Ideally it would be a good idea to fork gowsdl and create
+// a generator that produces code, but this is unlikely to
+// happen.
 
 import (
 	"time"

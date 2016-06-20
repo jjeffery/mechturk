@@ -1,4 +1,4 @@
-package mturk
+package mechturk
 
 import (
 	"encoding/xml"

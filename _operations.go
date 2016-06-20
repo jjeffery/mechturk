@@ -1,4 +1,4 @@
-package mturk
+package mechturk
 
 // NOTE: This code has been adapted from the generated output
 // of gowsdl (github.com/hooklift/gowsdl). See comments in wsdltypes.go

@@ -1,4 +1,4 @@
-package mturk
+package mechturk
 
 // This documents the command used to generate the WSDL types.
 // See comment in wsdltypes.go regarding hand-editing of generated output.

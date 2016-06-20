@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strings"
 
-	mechturk "github.com/jjeffery/mechturk"
+	"github.com/jjeffery/mechturk"
 	"github.com/spf13/cobra"
 )
 

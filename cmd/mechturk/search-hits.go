@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/aws/aws-sdk-go/aws/awsutil"
-	mechturk "github.com/jjeffery/mechturk"
+	"github.com/jjeffery/mechturk"
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +31,7 @@ func (opts *searchHitsOpts) Run(cmd *cobra.Command, args []string) {
 		log.Fatal("error: ", err)
 	}
 	result := resp.SearchHITsResult
-	fmt.Println(awsutil.Prettify(result))
+	fmt.Println(mechturk.Prettify(result))
 }
 
 func init() {
