@@ -64,3 +64,11 @@ $ mechturk --sandbox get-account-balance
   }
 }
 ```
+
+## API Stability
+
+This project is still under development, and there is currently no guarantee
+of API stability. If you are planning to make use of this code in any sort
+of production environment, please consider
+[vendoring](https://golang.org/cmd/go/#hdr-Vendor_Directories) the version
+you are using with your project.
