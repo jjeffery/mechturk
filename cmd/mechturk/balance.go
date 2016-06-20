@@ -14,7 +14,7 @@ type balanceOpts struct {
 }
 
 func (opts *balanceOpts) Run(cmd *cobra.Command, args []string) {
-	client := mechturk.NewClient(nil)
+	client := mechturk.New(nil)
 	resp, err := client.GetAccountBalance(&mechturk.GetAccountBalanceRequest{
 		ResponseGroup: getResponseGroups(),
 	})

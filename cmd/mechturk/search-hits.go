@@ -20,7 +20,7 @@ type searchHitsOpts struct {
 }
 
 func (opts *searchHitsOpts) Run(cmd *cobra.Command, args []string) {
-	client := mechturk.NewClient()
+	client := mechturk.New()
 	resp, err := client.SearchHITs(&mechturk.SearchHITsRequest{
 		SortDirection: opts.getSortDirection(),
 		SortProperty:  opts.getSortProperty(),

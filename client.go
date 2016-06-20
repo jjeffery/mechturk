@@ -5,24 +5,25 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Client is an AWS Mechanical Turk Requester client.
-type Client struct {
+// MechTurk is an AWS Mechanical Turk Requester client.
+type MechTurk struct {
 	Config *Config
 }
 
-// NewClient returns a new AWS Mechanical Turk Requester client.
-func NewClient(configs ...*Config) *Client {
+// New returns a new AWS Mechanical Turk Requester client.
+func New(configs ...*Config) *MechTurk {
 	config := DefaultConfig.Clone()
 	for _, c := range configs {
 		config = config.Merge(c)
 	}
-	return &Client{
+	return &MechTurk{
 		Config: config,
 	}
 }
 
-func (c *Client) call(operation string, request interface{}, response interface{}) error {
-	creds, err := c.Config.getCredentials().Get()
+// call contains common code for calling a SOAP web service.
+func (mt *MechTurk) call(operation string, request interface{}, response interface{}) error {
+	creds, err := mt.Config.getCredentials().Get()
 	if err != nil {
 		return errors.Wrap(err, operation)
 	}
@@ -30,18 +31,18 @@ func (c *Client) call(operation string, request interface{}, response interface{
 	if err != nil {
 		return errors.Wrap(err, operation)
 	}
-	soap := soap.NewClient(c.Config.getEndpoint())
-	soap.Logger = c.Config.Logger
-	if err := soap.Call(soapAction, payload, response); err != nil {
+	soapClient := soap.NewClient(mt.Config.getEndpoint())
+	soapClient.Logger = mt.Config.Logger
+	if err := soapClient.Call(soapAction, payload, response); err != nil {
 		return errors.Wrap(err, operation)
 	}
 	return nil
 }
 
 // ApproveAssignment is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_ApproveAssignmentOperation.html.
-func (c *Client) ApproveAssignment(request *ApproveAssignmentRequest) (*ApproveAssignmentResponse, error) {
+func (mt *MechTurk) ApproveAssignment(request *ApproveAssignmentRequest) (*ApproveAssignmentResponse, error) {
 	response := new(ApproveAssignmentResponse)
-	err := c.call("ApproveAssignment", request, response)
+	err := mt.call("ApproveAssignment", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -50,19 +51,19 @@ func (c *Client) ApproveAssignment(request *ApproveAssignmentRequest) (*ApproveA
 }
 
 // GetAccountBalance is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetAccountBalanceOperation.html.
-func (c *Client) GetAccountBalance(request *GetAccountBalanceRequest) (*GetAccountBalanceResponse, error) {
+func (mt *MechTurk) GetAccountBalance(request *GetAccountBalanceRequest) (*GetAccountBalanceResponse, error) {
 	const operation = "GetAccountBalance"
 	response := &GetAccountBalanceResponse{}
-	if err := c.call(operation, request, response); err != nil {
+	if err := mt.call(operation, request, response); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
 // CreateHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html.
-func (c *Client) CreateHIT(request *CreateHITRequest) (*CreateHITResponse, error) {
+func (mt *MechTurk) CreateHIT(request *CreateHITRequest) (*CreateHITResponse, error) {
 	response := new(CreateHITResponse)
-	err := c.call("CreateHIT", request, response)
+	err := mt.call("CreateHIT", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -71,9 +72,9 @@ func (c *Client) CreateHIT(request *CreateHITRequest) (*CreateHITResponse, error
 }
 
 // RegisterHITType is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_RegisterHITTypeOperation.html.
-func (c *Client) RegisterHITType(request *RegisterHITTypeRequest) (*RegisterHITTypeResponse, error) {
+func (mt *MechTurk) RegisterHITType(request *RegisterHITTypeRequest) (*RegisterHITTypeResponse, error) {
 	response := new(RegisterHITTypeResponse)
-	err := c.call("RegisterHITType", request, response)
+	err := mt.call("RegisterHITType", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -82,9 +83,9 @@ func (c *Client) RegisterHITType(request *RegisterHITTypeRequest) (*RegisterHITT
 }
 
 // SetHITTypeNotification is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_SetHITTypeNotificationOperation.html.
-func (c *Client) SetHITTypeNotification(request *SetHITTypeNotificationRequest) (*SetHITTypeNotificationResponse, error) {
+func (mt *MechTurk) SetHITTypeNotification(request *SetHITTypeNotificationRequest) (*SetHITTypeNotificationResponse, error) {
 	response := new(SetHITTypeNotificationResponse)
-	err := c.call("SetHITTypeNotification", request, response)
+	err := mt.call("SetHITTypeNotification", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -93,9 +94,9 @@ func (c *Client) SetHITTypeNotification(request *SetHITTypeNotificationRequest) 
 }
 
 // SendTestEventNotification is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_SendTestEventNotificationOperation.html.
-func (c *Client) SendTestEventNotification(request *SendTestEventNotificationRequest) (*SendTestEventNotificationResponse, error) {
+func (mt *MechTurk) SendTestEventNotification(request *SendTestEventNotificationRequest) (*SendTestEventNotificationResponse, error) {
 	response := new(SendTestEventNotificationResponse)
-	err := c.call("SendTestEventNotification", request, response)
+	err := mt.call("SendTestEventNotification", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -104,9 +105,9 @@ func (c *Client) SendTestEventNotification(request *SendTestEventNotificationReq
 }
 
 // DisposeHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_DisposeHITOperation.html.
-func (c *Client) DisposeHIT(request *DisposeHITRequest) (*DisposeHITResponse, error) {
+func (mt *MechTurk) DisposeHIT(request *DisposeHITRequest) (*DisposeHITResponse, error) {
 	response := new(DisposeHITResponse)
-	err := c.call("DisposeHIT", request, response)
+	err := mt.call("DisposeHIT", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -115,9 +116,9 @@ func (c *Client) DisposeHIT(request *DisposeHITRequest) (*DisposeHITResponse, er
 }
 
 // DisableHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_DisableHITOperation.html.
-func (c *Client) DisableHIT(request *DisableHITRequest) (*DisableHITResponse, error) {
+func (mt *MechTurk) DisableHIT(request *DisableHITRequest) (*DisableHITResponse, error) {
 	response := new(DisableHITResponse)
-	err := c.call("DisableHIT", request, response)
+	err := mt.call("DisableHIT", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -126,9 +127,9 @@ func (c *Client) DisableHIT(request *DisableHITRequest) (*DisableHITResponse, er
 }
 
 // GetHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetHITOperation.html.
-func (c *Client) GetHIT(request *GetHITRequest) (*GetHITResponse, error) {
+func (mt *MechTurk) GetHIT(request *GetHITRequest) (*GetHITResponse, error) {
 	response := new(GetHITResponse)
-	err := c.call("GetHIT", request, response)
+	err := mt.call("GetHIT", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -137,9 +138,9 @@ func (c *Client) GetHIT(request *GetHITRequest) (*GetHITResponse, error) {
 }
 
 // GetAssignment is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetAssignmentOperation.html.
-func (c *Client) GetAssignment(request *GetAssignmentRequest) (*GetAssignmentResponse, error) {
+func (mt *MechTurk) GetAssignment(request *GetAssignmentRequest) (*GetAssignmentResponse, error) {
 	response := new(GetAssignmentResponse)
-	err := c.call("GetAssignment", request, response)
+	err := mt.call("GetAssignment", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -148,9 +149,9 @@ func (c *Client) GetAssignment(request *GetAssignmentRequest) (*GetAssignmentRes
 }
 
 // GetReviewResultsForHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetReviewResultsForHitOperation.html.
-func (c *Client) GetReviewResultsForHIT(request *GetReviewResultsForHITRequest) (*GetReviewResultsForHITResponse, error) {
+func (mt *MechTurk) GetReviewResultsForHIT(request *GetReviewResultsForHITRequest) (*GetReviewResultsForHITResponse, error) {
 	response := new(GetReviewResultsForHITResponse)
-	err := c.call("GetReviewResultsForHIT", request, response)
+	err := mt.call("GetReviewResultsForHIT", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -159,9 +160,9 @@ func (c *Client) GetReviewResultsForHIT(request *GetReviewResultsForHITRequest) 
 }
 
 // GetReviewableHITs is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetReviewableHITsOperation.html.
-func (c *Client) GetReviewableHITs(request *GetReviewableHITsRequest) (*GetReviewableHITsResponse, error) {
+func (mt *MechTurk) GetReviewableHITs(request *GetReviewableHITsRequest) (*GetReviewableHITsResponse, error) {
 	response := new(GetReviewableHITsResponse)
-	err := c.call("GetReviewableHITs", request, response)
+	err := mt.call("GetReviewableHITs", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -170,9 +171,9 @@ func (c *Client) GetReviewableHITs(request *GetReviewableHITsRequest) (*GetRevie
 }
 
 // GetHITsForQualificationType is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetHITsForQualificationTypeOperation.html.
-func (c *Client) GetHITsForQualificationType(request *GetHITsForQualificationTypeRequest) (*GetHITsForQualificationTypeResponse, error) {
+func (mt *MechTurk) GetHITsForQualificationType(request *GetHITsForQualificationTypeRequest) (*GetHITsForQualificationTypeResponse, error) {
 	response := new(GetHITsForQualificationTypeResponse)
-	err := c.call("GetHITsForQualificationType", request, response)
+	err := mt.call("GetHITsForQualificationType", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -181,9 +182,9 @@ func (c *Client) GetHITsForQualificationType(request *GetHITsForQualificationTyp
 }
 
 // GetQualificationsForQualificationType is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetQualificationsForQualificationTypeOperation.html.
-func (c *Client) GetQualificationsForQualificationType(request *GetQualificationsForQualificationTypeRequest) (*GetQualificationsForQualificationTypeResponse, error) {
+func (mt *MechTurk) GetQualificationsForQualificationType(request *GetQualificationsForQualificationTypeRequest) (*GetQualificationsForQualificationTypeResponse, error) {
 	response := new(GetQualificationsForQualificationTypeResponse)
-	err := c.call("GetQualificationsForQualificationType", request, response)
+	err := mt.call("GetQualificationsForQualificationType", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -192,9 +193,9 @@ func (c *Client) GetQualificationsForQualificationType(request *GetQualification
 }
 
 // SetHITAsReviewing is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_SetHITAsReviewingOperation.html.
-func (c *Client) SetHITAsReviewing(request *SetHITAsReviewingRequest) (*SetHITAsReviewingResponse, error) {
+func (mt *MechTurk) SetHITAsReviewing(request *SetHITAsReviewingRequest) (*SetHITAsReviewingResponse, error) {
 	response := new(SetHITAsReviewingResponse)
-	err := c.call("SetHITAsReviewing", request, response)
+	err := mt.call("SetHITAsReviewing", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -203,7 +204,7 @@ func (c *Client) SetHITAsReviewing(request *SetHITAsReviewingRequest) (*SetHITAs
 }
 
 // ExtendHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_ExtendHITOperation.html.
-func (c *Client) ExtendHIT(request *ExtendHITRequest) (*ExtendHITResponse, error) {
+func (c *MechTurk) ExtendHIT(request *ExtendHITRequest) (*ExtendHITResponse, error) {
 	response := new(ExtendHITResponse)
 	err := c.call("ExtendHIT", request, response)
 	if err != nil {
@@ -214,9 +215,9 @@ func (c *Client) ExtendHIT(request *ExtendHITRequest) (*ExtendHITResponse, error
 }
 
 // ForceExpireHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_ForceExpireHITOperation.html.
-func (c *Client) ForceExpireHIT(request *ForceExpireHITRequest) (*ForceExpireHITResponse, error) {
+func (mt *MechTurk) ForceExpireHIT(request *ForceExpireHITRequest) (*ForceExpireHITResponse, error) {
 	response := new(ForceExpireHITResponse)
-	err := c.call("ForceExpireHIT", request, response)
+	err := mt.call("ForceExpireHIT", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -225,9 +226,9 @@ func (c *Client) ForceExpireHIT(request *ForceExpireHITRequest) (*ForceExpireHIT
 }
 
 // RejectAssignment is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_RejectAssignmentOperation.html.
-func (c *Client) RejectAssignment(request *RejectAssignmentRequest) (*RejectAssignmentResponse, error) {
+func (mt *MechTurk) RejectAssignment(request *RejectAssignmentRequest) (*RejectAssignmentResponse, error) {
 	response := new(RejectAssignmentResponse)
-	err := c.call("RejectAssignment", request, response)
+	err := mt.call("RejectAssignment", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -236,9 +237,9 @@ func (c *Client) RejectAssignment(request *RejectAssignmentRequest) (*RejectAssi
 }
 
 // ApproveRejectedAssignment is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_ApproveRejectedAssignmentOperation.html.
-func (c *Client) ApproveRejectedAssignment(request *ApproveRejectedAssignmentRequest) (*ApproveRejectedAssignmentResponse, error) {
+func (mt *MechTurk) ApproveRejectedAssignment(request *ApproveRejectedAssignmentRequest) (*ApproveRejectedAssignmentResponse, error) {
 	response := new(ApproveRejectedAssignmentResponse)
-	err := c.call("ApproveRejectedAssignment", request, response)
+	err := mt.call("ApproveRejectedAssignment", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -247,9 +248,9 @@ func (c *Client) ApproveRejectedAssignment(request *ApproveRejectedAssignmentReq
 }
 
 // GetAssignmentsForHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetAssignmentsForHITOperation.html.
-func (c *Client) GetAssignmentsForHIT(request *GetAssignmentsForHITRequest) (*GetAssignmentsForHITResponse, error) {
+func (mt *MechTurk) GetAssignmentsForHIT(request *GetAssignmentsForHITRequest) (*GetAssignmentsForHITResponse, error) {
 	response := new(GetAssignmentsForHITResponse)
-	err := c.call("GetAssignmentsForHIT", request, response)
+	err := mt.call("GetAssignmentsForHIT", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -258,9 +259,9 @@ func (c *Client) GetAssignmentsForHIT(request *GetAssignmentsForHITRequest) (*Ge
 }
 
 // GetFileUploadURL is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetFileUploadURLOperation.html.
-func (c *Client) GetFileUploadURL(request *GetFileUploadURLRequest) (*GetFileUploadURLResponse, error) {
+func (mt *MechTurk) GetFileUploadURL(request *GetFileUploadURLRequest) (*GetFileUploadURLResponse, error) {
 	response := new(GetFileUploadURLResponse)
-	err := c.call("GetFileUploadURL", request, response)
+	err := mt.call("GetFileUploadURL", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -269,9 +270,9 @@ func (c *Client) GetFileUploadURL(request *GetFileUploadURLRequest) (*GetFileUpl
 }
 
 // SearchHITs is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_SearchHITsOperation.html.
-func (c *Client) SearchHITs(request *SearchHITsRequest) (*SearchHITsResponse, error) {
+func (mt *MechTurk) SearchHITs(request *SearchHITsRequest) (*SearchHITsResponse, error) {
 	response := new(SearchHITsResponse)
-	err := c.call("SearchHITs", request, response)
+	err := mt.call("SearchHITs", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -280,9 +281,9 @@ func (c *Client) SearchHITs(request *SearchHITsRequest) (*SearchHITsResponse, er
 }
 
 // GrantBonus is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GrantBonusOperation.html.
-func (c *Client) GrantBonus(request *GrantBonusRequest) (*GrantBonusResponse, error) {
+func (mt *MechTurk) GrantBonus(request *GrantBonusRequest) (*GrantBonusResponse, error) {
 	response := new(GrantBonusResponse)
-	err := c.call("GrantBonus", request, response)
+	err := mt.call("GrantBonus", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -291,9 +292,9 @@ func (c *Client) GrantBonus(request *GrantBonusRequest) (*GrantBonusResponse, er
 }
 
 // GetBonusPayments is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetBonusPaymentsOperation.html.
-func (c *Client) GetBonusPayments(request *GetBonusPaymentsRequest) (*GetBonusPaymentsResponse, error) {
+func (mt *MechTurk) GetBonusPayments(request *GetBonusPaymentsRequest) (*GetBonusPaymentsResponse, error) {
 	response := new(GetBonusPaymentsResponse)
-	err := c.call("GetBonusPayments", request, response)
+	err := mt.call("GetBonusPayments", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -302,9 +303,9 @@ func (c *Client) GetBonusPayments(request *GetBonusPaymentsRequest) (*GetBonusPa
 }
 
 // ChangeHITTypeOfHIT is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_ChangeHITTypeOfHITOperation.html.
-func (c *Client) ChangeHITTypeOfHIT(request *ChangeHITTypeOfHITRequest) (*ChangeHITTypeOfHITResponse, error) {
+func (mt *MechTurk) ChangeHITTypeOfHIT(request *ChangeHITTypeOfHITRequest) (*ChangeHITTypeOfHITResponse, error) {
 	response := new(ChangeHITTypeOfHITResponse)
-	err := c.call("ChangeHITTypeOfHIT", request, response)
+	err := mt.call("ChangeHITTypeOfHIT", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -313,9 +314,9 @@ func (c *Client) ChangeHITTypeOfHIT(request *ChangeHITTypeOfHITRequest) (*Change
 }
 
 // CreateQualificationType is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateQualificationTypeOperation.html.
-func (c *Client) CreateQualificationType(request *CreateQualificationTypeRequest) (*CreateQualificationTypeResponse, error) {
+func (mt *MechTurk) CreateQualificationType(request *CreateQualificationTypeRequest) (*CreateQualificationTypeResponse, error) {
 	response := new(CreateQualificationTypeResponse)
-	err := c.call("CreateQualificationType", request, response)
+	err := mt.call("CreateQualificationType", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -324,9 +325,9 @@ func (c *Client) CreateQualificationType(request *CreateQualificationTypeRequest
 }
 
 // GrantQualification is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GrantQualificationOperation.html.
-func (c *Client) GrantQualification(request *GrantQualificationRequest) (*GrantQualificationResponse, error) {
+func (mt *MechTurk) GrantQualification(request *GrantQualificationRequest) (*GrantQualificationResponse, error) {
 	response := new(GrantQualificationResponse)
-	err := c.call("GrantQualification", request, response)
+	err := mt.call("GrantQualification", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -335,9 +336,9 @@ func (c *Client) GrantQualification(request *GrantQualificationRequest) (*GrantQ
 }
 
 // AssignQualification is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_AssignQualificationOperation.html.
-func (c *Client) AssignQualification(request *AssignQualificationRequest) (*AssignQualificationResponse, error) {
+func (mt *MechTurk) AssignQualification(request *AssignQualificationRequest) (*AssignQualificationResponse, error) {
 	response := new(AssignQualificationResponse)
-	err := c.call("AssignQualification", request, response)
+	err := mt.call("AssignQualification", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -346,9 +347,9 @@ func (c *Client) AssignQualification(request *AssignQualificationRequest) (*Assi
 }
 
 // RevokeQualification is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_RevokeQualificationOperation.html.
-func (c *Client) RevokeQualification(request *RevokeQualificationRequest) (*RevokeQualificationResponse, error) {
+func (mt *MechTurk) RevokeQualification(request *RevokeQualificationRequest) (*RevokeQualificationResponse, error) {
 	response := new(RevokeQualificationResponse)
-	err := c.call("RevokeQualification", request, response)
+	err := mt.call("RevokeQualification", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -357,9 +358,9 @@ func (c *Client) RevokeQualification(request *RevokeQualificationRequest) (*Revo
 }
 
 // GetQualificationType is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetQualificationTypeOperation.html.
-func (c *Client) GetQualificationType(request *GetQualificationTypeRequest) (*GetQualificationTypeResponse, error) {
+func (mt *MechTurk) GetQualificationType(request *GetQualificationTypeRequest) (*GetQualificationTypeResponse, error) {
 	response := new(GetQualificationTypeResponse)
-	err := c.call("GetQualificationType", request, response)
+	err := mt.call("GetQualificationType", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -368,9 +369,9 @@ func (c *Client) GetQualificationType(request *GetQualificationTypeRequest) (*Ge
 }
 
 // GetQualificationRequests is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetQualificationRequestsOperation.html.
-func (c *Client) GetQualificationRequests(request *GetQualificationRequestsRequest) (*GetQualificationRequestsResponse, error) {
+func (mt *MechTurk) GetQualificationRequests(request *GetQualificationRequestsRequest) (*GetQualificationRequestsResponse, error) {
 	response := new(GetQualificationRequestsResponse)
-	err := c.call("GetQualificationRequests", request, response)
+	err := mt.call("GetQualificationRequests", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -379,9 +380,9 @@ func (c *Client) GetQualificationRequests(request *GetQualificationRequestsReque
 }
 
 // RejectQualificationRequest is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_RejectQualificationRequestOperation.html.
-func (c *Client) RejectQualificationRequest(request *RejectQualificationRequestRequest) (*RejectQualificationRequestResponse, error) {
+func (mt *MechTurk) RejectQualificationRequest(request *RejectQualificationRequestRequest) (*RejectQualificationRequestResponse, error) {
 	response := new(RejectQualificationRequestResponse)
-	err := c.call("RejectQualificationRequest", request, response)
+	err := mt.call("RejectQualificationRequest", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -390,9 +391,9 @@ func (c *Client) RejectQualificationRequest(request *RejectQualificationRequestR
 }
 
 // UpdateQualificationType is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_UpdateQualificationTypeOperation.html.
-func (c *Client) UpdateQualificationType(request *UpdateQualificationTypeRequest) (*UpdateQualificationTypeResponse, error) {
+func (mt *MechTurk) UpdateQualificationType(request *UpdateQualificationTypeRequest) (*UpdateQualificationTypeResponse, error) {
 	response := new(UpdateQualificationTypeResponse)
-	err := c.call("UpdateQualificationType", request, response)
+	err := mt.call("UpdateQualificationType", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -401,9 +402,9 @@ func (c *Client) UpdateQualificationType(request *UpdateQualificationTypeRequest
 }
 
 // SearchQualificationTypes is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_SearchQualificationTypesOperation.html.
-func (c *Client) SearchQualificationTypes(request *SearchQualificationTypesRequest) (*SearchQualificationTypesResponse, error) {
+func (mt *MechTurk) SearchQualificationTypes(request *SearchQualificationTypesRequest) (*SearchQualificationTypesResponse, error) {
 	response := new(SearchQualificationTypesResponse)
-	err := c.call("SearchQualificationTypes", request, response)
+	err := mt.call("SearchQualificationTypes", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -412,9 +413,9 @@ func (c *Client) SearchQualificationTypes(request *SearchQualificationTypesReque
 }
 
 // GetQualificationScore is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetQualificationScoreOperation.html.
-func (c *Client) GetQualificationScore(request *GetQualificationScoreRequest) (*GetQualificationScoreResponse, error) {
+func (mt *MechTurk) GetQualificationScore(request *GetQualificationScoreRequest) (*GetQualificationScoreResponse, error) {
 	response := new(GetQualificationScoreResponse)
-	err := c.call("GetQualificationScore", request, response)
+	err := mt.call("GetQualificationScore", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -423,9 +424,9 @@ func (c *Client) GetQualificationScore(request *GetQualificationScoreRequest) (*
 }
 
 // UpdateQualificationScore is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_UpdateQualificationScoreOperation.html.
-func (c *Client) UpdateQualificationScore(request *UpdateQualificationScoreRequest) (*UpdateQualificationScoreResponse, error) {
+func (mt *MechTurk) UpdateQualificationScore(request *UpdateQualificationScoreRequest) (*UpdateQualificationScoreResponse, error) {
 	response := new(UpdateQualificationScoreResponse)
-	err := c.call("UpdateQualificationScore", request, response)
+	err := mt.call("UpdateQualificationScore", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -434,9 +435,9 @@ func (c *Client) UpdateQualificationScore(request *UpdateQualificationScoreReque
 }
 
 // DisposeQualificationType is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_DisposeQualificationTypeOperation.html.
-func (c *Client) DisposeQualificationType(request *DisposeQualificationTypeRequest) (*DisposeQualificationTypeResponse, error) {
+func (mt *MechTurk) DisposeQualificationType(request *DisposeQualificationTypeRequest) (*DisposeQualificationTypeResponse, error) {
 	response := new(DisposeQualificationTypeResponse)
-	err := c.call("DisposeQualificationType", request, response)
+	err := mt.call("DisposeQualificationType", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -445,9 +446,9 @@ func (c *Client) DisposeQualificationType(request *DisposeQualificationTypeReque
 }
 
 // GetRequesterStatistic is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetRequesterStatisticOperation.html.
-func (c *Client) GetRequesterStatistic(request *GetRequesterStatisticRequest) (*GetRequesterStatisticResponse, error) {
+func (mt *MechTurk) GetRequesterStatistic(request *GetRequesterStatisticRequest) (*GetRequesterStatisticResponse, error) {
 	response := new(GetRequesterStatisticResponse)
-	err := c.call("GetRequesterStatistic", request, response)
+	err := mt.call("GetRequesterStatistic", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -456,9 +457,9 @@ func (c *Client) GetRequesterStatistic(request *GetRequesterStatisticRequest) (*
 }
 
 // GetRequesterWorkerStatistic is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetRequesterWorkerStatisticOperation.html.
-func (c *Client) GetRequesterWorkerStatistic(request *GetRequesterWorkerStatisticRequest) (*GetRequesterWorkerStatisticResponse, error) {
+func (mt *MechTurk) GetRequesterWorkerStatistic(request *GetRequesterWorkerStatisticRequest) (*GetRequesterWorkerStatisticResponse, error) {
 	response := new(GetRequesterWorkerStatisticResponse)
-	err := c.call("GetRequesterWorkerStatistic", request, response)
+	err := mt.call("GetRequesterWorkerStatistic", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -467,9 +468,9 @@ func (c *Client) GetRequesterWorkerStatistic(request *GetRequesterWorkerStatisti
 }
 
 // NotifyWorkers is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_NotifyWorkersOperation.html.
-func (c *Client) NotifyWorkers(request *NotifyWorkersRequest) (*NotifyWorkersResponse, error) {
+func (mt *MechTurk) NotifyWorkers(request *NotifyWorkersRequest) (*NotifyWorkersResponse, error) {
 	response := new(NotifyWorkersResponse)
-	err := c.call("NotifyWorkers", request, response)
+	err := mt.call("NotifyWorkers", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -478,9 +479,9 @@ func (c *Client) NotifyWorkers(request *NotifyWorkersRequest) (*NotifyWorkersRes
 }
 
 // GetBlockedWorkers is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetBlockedWorkersOperation.html.
-func (c *Client) GetBlockedWorkers(request *GetBlockedWorkersRequest) (*GetBlockedWorkersResponse, error) {
+func (mt *MechTurk) GetBlockedWorkers(request *GetBlockedWorkersRequest) (*GetBlockedWorkersResponse, error) {
 	response := new(GetBlockedWorkersResponse)
-	err := c.call("GetBlockedWorkers", request, response)
+	err := mt.call("GetBlockedWorkers", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -489,9 +490,9 @@ func (c *Client) GetBlockedWorkers(request *GetBlockedWorkersRequest) (*GetBlock
 }
 
 // BlockWorker is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_BlockWorkerOperation.html.
-func (c *Client) BlockWorker(request *BlockWorkerRequest) (*BlockWorkerResponse, error) {
+func (mt *MechTurk) BlockWorker(request *BlockWorkerRequest) (*BlockWorkerResponse, error) {
 	response := new(BlockWorkerResponse)
-	err := c.call("BlockWorker", request, response)
+	err := mt.call("BlockWorker", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -500,9 +501,9 @@ func (c *Client) BlockWorker(request *BlockWorkerRequest) (*BlockWorkerResponse,
 }
 
 // UnblockWorker is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_UnblockWorkerOperation.html.
-func (c *Client) UnblockWorker(request *UnblockWorkerRequest) (*UnblockWorkerResponse, error) {
+func (mt *MechTurk) UnblockWorker(request *UnblockWorkerRequest) (*UnblockWorkerResponse, error) {
 	response := new(UnblockWorkerResponse)
-	err := c.call("UnblockWorker", request, response)
+	err := mt.call("UnblockWorker", request, response)
 	if err != nil {
 		return nil, err
 	}
@@ -511,9 +512,9 @@ func (c *Client) UnblockWorker(request *UnblockWorkerRequest) (*UnblockWorkerRes
 }
 
 // Help is documented at http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_HelpOperation.html.
-func (c *Client) Help(request *HelpRequest) (*HelpResponse, error) {
+func (mt *MechTurk) Help(request *HelpRequest) (*HelpResponse, error) {
 	response := new(HelpResponse)
-	err := c.call("Help", request, response)
+	err := mt.call("Help", request, response)
 	if err != nil {
 		return nil, err
 	}
