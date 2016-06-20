@@ -2,7 +2,7 @@ package credentials
 
 // Default credentials for use when credentials are not explicitly
 // specified.
-var Default = NewEnvCredentials()
+var Default = NewChainCredentials(&EnvProvider{}, &SharedCredentialsProvider{})
 
 // A Provider is the interface for any component which will provide credentials.
 type Provider interface {

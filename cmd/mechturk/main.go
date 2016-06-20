@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/jjeffery/mechturk"
+	"github.com/jjeffery/mechturk/credentials"
 	"github.com/spf13/cobra"
 )
 
@@ -43,7 +44,9 @@ func init() {
 func applyGlobalOptions(cmd *cobra.Command, args []string) {
 	if globalOptions.verbose {
 		log.SetFlags(log.Ltime | log.Lshortfile)
-		mechturk.DefaultConfig.Logger = log.New(os.Stdout, "", log.Flags())
+		logger := log.New(os.Stdout, "", log.Flags())
+		mechturk.DefaultConfig.Logger = logger
+		credentials.Logger = logger
 	}
 	if globalOptions.sandbox {
 		mechturk.DefaultConfig = mechturk.DefaultConfig.WithSandbox(true)
