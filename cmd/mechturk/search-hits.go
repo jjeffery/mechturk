@@ -8,7 +8,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type searchHitsOpts struct {
+var searchHits = newSearchHits(global)
+
+type searchHitsT struct {
+	command *cobra.Command
+
 	sortDirection string
 	sortProperty  string
 	pageNumber    int32
@@ -18,14 +22,40 @@ type searchHitsOpts struct {
 	sortProperties stringSelection
 }
 
-func (opts *searchHitsOpts) Run(cmd *cobra.Command, args []string) {
+func newSearchHits(g *globalT) *searchHitsT {
+	s := &searchHitsT{}
+	s.command = &cobra.Command{
+		Use:     "search-hits",
+		Aliases: []string{"search"},
+		Short:   "search HITs",
+		Run:     s.Run,
+	}
+	s.command.PersistentFlags().StringVar(&s.sortDirection, "sort-direction", "", "sort direction")
+	s.command.PersistentFlags().StringVar(&s.sortProperty, "sort-property", "", "sort property")
+	s.command.PersistentFlags().Int32Var(&s.pageNumber, "page-number", 0, "page number")
+	s.command.PersistentFlags().Int32Var(&s.pageSize, "page-size", 0, "page size")
+	g.command.AddCommand(s.command)
+
+	s.sortDirections = newStringSelection("sort direction",
+		mechturk.SortDirectionAscending,
+		mechturk.SortDirectionDescending)
+	s.sortProperties = newStringSelection("sort property",
+		mechturk.SearchHITsSortPropertyTitle,
+		mechturk.SearchHITsSortPropertyReward,
+		mechturk.SearchHITsSortPropertyExpiration,
+		mechturk.SearchHITsSortPropertyCreationTime,
+		mechturk.SearchHITsSortPropertyEnumeration)
+	return s
+}
+
+func (s *searchHitsT) Run(cmd *cobra.Command, args []string) {
 	client := mechturk.New()
 	resp, err := client.SearchHITs(&mechturk.SearchHITsRequest{
-		SortDirection: opts.getSortDirection(),
-		SortProperty:  opts.getSortProperty(),
-		PageNumber:    opts.pageNumber,
-		PageSize:      opts.pageSize,
-		ResponseGroup: getResponseGroups(),
+		SortDirection: s.getSortDirection(),
+		SortProperty:  s.getSortProperty(),
+		PageNumber:    s.pageNumber,
+		PageSize:      s.pageSize,
+		ResponseGroup: commonGetResponseGroups(),
 	})
 	if err != nil {
 		log.Fatal("error: ", err)
@@ -34,36 +64,10 @@ func (opts *searchHitsOpts) Run(cmd *cobra.Command, args []string) {
 	fmt.Println(mechturk.Prettify(result))
 }
 
-func init() {
-	opts := &searchHitsOpts{}
-	cmd := &cobra.Command{
-		Use:     "search-hits",
-		Aliases: []string{"search"},
-		Short:   "search HITs",
-		Run:     opts.Run,
-		PreRun:  applyGlobalOptions,
-	}
-	cmd.PersistentFlags().StringVar(&opts.sortDirection, "sort-direction", "", "sort direction")
-	cmd.PersistentFlags().StringVar(&opts.sortProperty, "sort-property", "", "sort property")
-	cmd.PersistentFlags().Int32Var(&opts.pageNumber, "page-number", 0, "page number")
-	cmd.PersistentFlags().Int32Var(&opts.pageSize, "page-size", 0, "page size")
-	rootCommand.AddCommand(cmd)
-
-	opts.sortDirections = newStringSelection("sort direction",
-		mechturk.SortDirectionAscending,
-		mechturk.SortDirectionDescending)
-	opts.sortProperties = newStringSelection("sort property",
-		mechturk.SearchHITsSortPropertyTitle,
-		mechturk.SearchHITsSortPropertyReward,
-		mechturk.SearchHITsSortPropertyExpiration,
-		mechturk.SearchHITsSortPropertyCreationTime,
-		mechturk.SearchHITsSortPropertyEnumeration)
+func (s *searchHitsT) getSortDirection() *mechturk.SortDirection {
+	return (*mechturk.SortDirection)(s.sortDirections.Select(s.sortDirection))
 }
 
-func (opts *searchHitsOpts) getSortDirection() *mechturk.SortDirection {
-	return (*mechturk.SortDirection)(opts.sortDirections.Select(opts.sortDirection))
-}
-
-func (opts *searchHitsOpts) getSortProperty() *mechturk.SearchHITsSortProperty {
-	return (*mechturk.SearchHITsSortProperty)(opts.sortProperties.Select(opts.sortProperty))
+func (s *searchHitsT) getSortProperty() *mechturk.SearchHITsSortProperty {
+	return (*mechturk.SearchHITsSortProperty)(s.sortProperties.Select(s.sortProperty))
 }
