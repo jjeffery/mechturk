@@ -8,7 +8,7 @@
 
 Package mechturk provides a Go SDK for the AWS Mechanical Turk Requester API.
 
-Here is about the simplest example possible:
+Here is a simple example that invokes the [GetAccountBalance](http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetAccountBalanceOperation.html) operation:
 
 ```go
 package main
@@ -20,11 +20,11 @@ import (
 
 func main() {
 	mt := mechturk.New()
-	resp, err := mt.GetAccountBalance(&mechturk.GetAccountBalanceRequest{})
+	result, err := mt.GetAccountBalance(&mechturk.GetAccountBalanceRequest{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(mechturk.Prettify(resp))
+	log.Println(mechturk.Prettify(result))
 }
 ```
 
@@ -36,9 +36,9 @@ This program will produce output similar to:
     IsValid: "True"
   },
   AvailableBalance: {
-    Amount: 0,
+    Amount: 10000,
     CurrencyCode: "USD",
-    FormattedPrice: "$0.00"
+    FormattedPrice: "$10,000.00"
   }
 }
 ```
