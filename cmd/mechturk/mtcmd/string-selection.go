@@ -1,4 +1,4 @@
-package main
+package mtcmd
 
 import (
 	"log"
@@ -6,13 +6,13 @@ import (
 	"strings"
 )
 
-type stringSelection struct {
+type StringSelection struct {
 	Name  string
 	Valid []string
 }
 
-func newStringSelection(name string, valid ...interface{}) stringSelection {
-	ss := stringSelection{
+func NewStringSelection(name string, valid ...interface{}) StringSelection {
+	ss := StringSelection{
 		Name:  name,
 		Valid: make([]string, len(valid)),
 	}
@@ -22,7 +22,7 @@ func newStringSelection(name string, valid ...interface{}) stringSelection {
 	return ss
 }
 
-func (ss stringSelection) Select(value string) *string {
+func (ss StringSelection) Select(value string) *string {
 	value = strings.TrimSpace(value)
 	if value == "" {
 		// empty string means not specified
