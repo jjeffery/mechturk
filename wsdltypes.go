@@ -220,219 +220,219 @@ const (
 
 // CreateHITResponse is the output from CreateHIT, which is documented at
 // http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html.
-type CreateHITResponse struct {
+type createHITResponse struct {
 	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
 	HIT              *HIT              `xml:"HIT,omitempty"`
 }
 
-type RegisterHITTypeResponse struct {
-	OperationRequest      *OperationRequest        `xml:"OperationRequest,omitempty"`
-	RegisterHITTypeResult []*RegisterHITTypeResult `xml:"RegisterHITTypeResult,omitempty"`
+type registerHITTypeResponse struct {
+	OperationRequest      *OperationRequest      `xml:"OperationRequest,omitempty"`
+	RegisterHITTypeResult *RegisterHITTypeResult `xml:"RegisterHITTypeResult,omitempty"`
 }
 
-type SetHITTypeNotificationResponse struct {
-	OperationRequest             *OperationRequest               `xml:"OperationRequest,omitempty"`
-	SetHITTypeNotificationResult []*SetHITTypeNotificationResult `xml:"SetHITTypeNotificationResult,omitempty"`
+type setHITTypeNotificationResponse struct {
+	OperationRequest             *OperationRequest             `xml:"OperationRequest,omitempty"`
+	SetHITTypeNotificationResult *SetHITTypeNotificationResult `xml:"SetHITTypeNotificationResult,omitempty"`
 }
 
-type SendTestEventNotificationResponse struct {
-	OperationRequest                *OperationRequest                  `xml:"OperationRequest,omitempty"`
-	SendTestEventNotificationResult []*SendTestEventNotificationResult `xml:"SendTestEventNotificationResult,omitempty"`
+type sendTestEventNotificationResponse struct {
+	OperationRequest                *OperationRequest                `xml:"OperationRequest,omitempty"`
+	SendTestEventNotificationResult *SendTestEventNotificationResult `xml:"SendTestEventNotificationResult,omitempty"`
 }
 
-type DisposeHITResponse struct {
-	OperationRequest *OperationRequest   `xml:"OperationRequest,omitempty"`
-	DisposeHITResult []*DisposeHITResult `xml:"DisposeHITResult,omitempty"`
-}
-
-type DisableHITResponse struct {
-	OperationRequest *OperationRequest   `xml:"OperationRequest,omitempty"`
-	DisableHITResult []*DisableHITResult `xml:"DisableHITResult,omitempty"`
-}
-
-type GetHITResponse struct {
+type disposeHITResponse struct {
 	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
-	HIT              []*HIT            `xml:"HIT,omitempty"`
+	DisposeHITResult *DisposeHITResult `xml:"DisposeHITResult,omitempty"`
 }
 
-type GetAssignmentResponse struct {
-	OperationRequest    *OperationRequest      `xml:"OperationRequest,omitempty"`
-	GetAssignmentResult []*GetAssignmentResult `xml:"GetAssignmentResult,omitempty"`
-}
-
-type GetReviewableHITsResponse struct {
-	OperationRequest        *OperationRequest          `xml:"OperationRequest,omitempty"`
-	GetReviewableHITsResult []*GetReviewableHITsResult `xml:"GetReviewableHITsResult,omitempty"`
-}
-
-type GetReviewResultsForHITResponse struct {
-	OperationRequest             *OperationRequest               `xml:"OperationRequest,omitempty"`
-	GetReviewResultsForHITResult []*GetReviewResultsForHITResult `xml:"GetReviewResultsForHITResult,omitempty"`
-}
-
-type GetHITsForQualificationTypeResponse struct {
-	OperationRequest                  *OperationRequest                    `xml:"OperationRequest,omitempty"`
-	GetHITsForQualificationTypeResult []*GetHITsForQualificationTypeResult `xml:"GetHITsForQualificationTypeResult,omitempty"`
-}
-
-type GetQualificationsForQualificationTypeResponse struct {
-	OperationRequest                            *OperationRequest                              `xml:"OperationRequest,omitempty"`
-	GetQualificationsForQualificationTypeResult []*GetQualificationsForQualificationTypeResult `xml:"GetQualificationsForQualificationTypeResult,omitempty"`
-}
-
-type SetHITAsReviewingResponse struct {
-	OperationRequest        *OperationRequest          `xml:"OperationRequest,omitempty"`
-	SetHITAsReviewingResult []*SetHITAsReviewingResult `xml:"SetHITAsReviewingResult,omitempty"`
-}
-
-type ExtendHITResponse struct {
-	OperationRequest *OperationRequest  `xml:"OperationRequest,omitempty"`
-	ExtendHITResult  []*ExtendHITResult `xml:"ExtendHITResult,omitempty"`
-}
-
-type ForceExpireHITResponse struct {
-	OperationRequest     *OperationRequest       `xml:"OperationRequest,omitempty"`
-	ForceExpireHITResult []*ForceExpireHITResult `xml:"ForceExpireHITResult,omitempty"`
-}
-
-type ApproveAssignmentResponse struct {
-	OperationRequest        *OperationRequest          `xml:"OperationRequest,omitempty"`
-	ApproveAssignmentResult []*ApproveAssignmentResult `xml:"ApproveAssignmentResult,omitempty"`
-}
-
-type RejectAssignmentResponse struct {
-	OperationRequest       *OperationRequest         `xml:"OperationRequest,omitempty"`
-	RejectAssignmentResult []*RejectAssignmentResult `xml:"RejectAssignmentResult,omitempty"`
-}
-
-type ApproveRejectedAssignmentResponse struct {
-	OperationRequest                *OperationRequest                  `xml:"OperationRequest,omitempty"`
-	ApproveRejectedAssignmentResult []*ApproveRejectedAssignmentResult `xml:"ApproveRejectedAssignmentResult,omitempty"`
-}
-
-type GetAssignmentsForHITResponse struct {
-	OperationRequest           *OperationRequest             `xml:"OperationRequest,omitempty"`
-	GetAssignmentsForHITResult []*GetAssignmentsForHITResult `xml:"GetAssignmentsForHITResult,omitempty"`
-}
-
-type GetFileUploadURLResponse struct {
-	OperationRequest       *OperationRequest         `xml:"OperationRequest,omitempty"`
-	GetFileUploadURLResult []*GetFileUploadURLResult `xml:"GetFileUploadURLResult,omitempty"`
-}
-
-type SearchHITsResponse struct {
-	OperationRequest *OperationRequest   `xml:"OperationRequest,omitempty"`
-	SearchHITsResult []*SearchHITsResult `xml:"SearchHITsResult,omitempty"`
-}
-
-type GrantBonusResponse struct {
-	OperationRequest *OperationRequest   `xml:"OperationRequest,omitempty"`
-	GrantBonusResult []*GrantBonusResult `xml:"GrantBonusResult,omitempty"`
-}
-
-type GetBonusPaymentsResponse struct {
-	OperationRequest       *OperationRequest         `xml:"OperationRequest,omitempty"`
-	GetBonusPaymentsResult []*GetBonusPaymentsResult `xml:"GetBonusPaymentsResult,omitempty"`
-}
-
-type ChangeHITTypeOfHITResponse struct {
-	OperationRequest         *OperationRequest           `xml:"OperationRequest,omitempty"`
-	ChangeHITTypeOfHITResult []*ChangeHITTypeOfHITResult `xml:"ChangeHITTypeOfHITResult,omitempty"`
-}
-
-type CreateQualificationTypeResponse struct {
-	OperationRequest  *OperationRequest    `xml:"OperationRequest,omitempty"`
-	QualificationType []*QualificationType `xml:"QualificationType,omitempty"`
-}
-
-type DisposeQualificationTypeResponse struct {
-	OperationRequest               *OperationRequest                 `xml:"OperationRequest,omitempty"`
-	DisposeQualificationTypeResult []*DisposeQualificationTypeResult `xml:"DisposeQualificationTypeResult,omitempty"`
-}
-
-type GetQualificationRequestsResponse struct {
-	OperationRequest               *OperationRequest                 `xml:"OperationRequest,omitempty"`
-	GetQualificationRequestsResult []*GetQualificationRequestsResult `xml:"GetQualificationRequestsResult,omitempty"`
-}
-
-type RejectQualificationRequestResponse struct {
-	OperationRequest                 *OperationRequest                   `xml:"OperationRequest,omitempty"`
-	RejectQualificationRequestResult []*RejectQualificationRequestResult `xml:"RejectQualificationRequestResult,omitempty"`
-}
-
-type GrantQualificationResponse struct {
-	OperationRequest         *OperationRequest           `xml:"OperationRequest,omitempty"`
-	GrantQualificationResult []*GrantQualificationResult `xml:"GrantQualificationResult,omitempty"`
-}
-
-type AssignQualificationResponse struct {
-	OperationRequest          *OperationRequest            `xml:"OperationRequest,omitempty"`
-	AssignQualificationResult []*AssignQualificationResult `xml:"AssignQualificationResult,omitempty"`
-}
-
-type RevokeQualificationResponse struct {
-	OperationRequest          *OperationRequest            `xml:"OperationRequest,omitempty"`
-	RevokeQualificationResult []*RevokeQualificationResult `xml:"RevokeQualificationResult,omitempty"`
-}
-
-type UpdateQualificationScoreResponse struct {
-	OperationRequest               *OperationRequest                 `xml:"OperationRequest,omitempty"`
-	UpdateQualificationScoreResult []*UpdateQualificationScoreResult `xml:"UpdateQualificationScoreResult,omitempty"`
-}
-
-type GetQualificationTypeResponse struct {
-	OperationRequest  *OperationRequest    `xml:"OperationRequest,omitempty"`
-	QualificationType []*QualificationType `xml:"QualificationType,omitempty"`
-}
-
-type GetQualificationScoreResponse struct {
+type disableHITResponse struct {
 	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
-	Qualification    []*Qualification  `xml:"Qualification,omitempty"`
+	DisableHITResult *DisableHITResult `xml:"DisableHITResult,omitempty"`
 }
 
-type SearchQualificationTypesResponse struct {
-	OperationRequest               *OperationRequest                 `xml:"OperationRequest,omitempty"`
-	SearchQualificationTypesResult []*SearchQualificationTypesResult `xml:"SearchQualificationTypesResult,omitempty"`
+type getHITResponse struct {
+	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
+	HIT              *HIT              `xml:"HIT,omitempty"`
 }
 
-type UpdateQualificationTypeResponse struct {
-	OperationRequest  *OperationRequest    `xml:"OperationRequest,omitempty"`
-	QualificationType []*QualificationType `xml:"QualificationType,omitempty"`
+type getAssignmentResponse struct {
+	OperationRequest    *OperationRequest    `xml:"OperationRequest,omitempty"`
+	GetAssignmentResult *GetAssignmentResult `xml:"GetAssignmentResult,omitempty"`
 }
 
-type GetAccountBalanceResponse struct {
+type getReviewableHITsResponse struct {
+	OperationRequest        *OperationRequest        `xml:"OperationRequest,omitempty"`
+	GetReviewableHITsResult *GetReviewableHITsResult `xml:"GetReviewableHITsResult,omitempty"`
+}
+
+type getReviewResultsForHITResponse struct {
+	OperationRequest             *OperationRequest             `xml:"OperationRequest,omitempty"`
+	GetReviewResultsForHITResult *GetReviewResultsForHITResult `xml:"GetReviewResultsForHITResult,omitempty"`
+}
+
+type getHITsForQualificationTypeResponse struct {
+	OperationRequest                  *OperationRequest                  `xml:"OperationRequest,omitempty"`
+	GetHITsForQualificationTypeResult *GetHITsForQualificationTypeResult `xml:"GetHITsForQualificationTypeResult,omitempty"`
+}
+
+type getQualificationsForQualificationTypeResponse struct {
+	OperationRequest                            *OperationRequest                            `xml:"OperationRequest,omitempty"`
+	GetQualificationsForQualificationTypeResult *GetQualificationsForQualificationTypeResult `xml:"GetQualificationsForQualificationTypeResult,omitempty"`
+}
+
+type setHITAsReviewingResponse struct {
+	OperationRequest        *OperationRequest        `xml:"OperationRequest,omitempty"`
+	SetHITAsReviewingResult *SetHITAsReviewingResult `xml:"SetHITAsReviewingResult,omitempty"`
+}
+
+type extendHITResponse struct {
+	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
+	ExtendHITResult  *ExtendHITResult  `xml:"ExtendHITResult,omitempty"`
+}
+
+type forceExpireHITResponse struct {
+	OperationRequest     *OperationRequest     `xml:"OperationRequest,omitempty"`
+	ForceExpireHITResult *ForceExpireHITResult `xml:"ForceExpireHITResult,omitempty"`
+}
+
+type approveAssignmentResponse struct {
+	OperationRequest        *OperationRequest        `xml:"OperationRequest,omitempty"`
+	ApproveAssignmentResult *ApproveAssignmentResult `xml:"ApproveAssignmentResult,omitempty"`
+}
+
+type rejectAssignmentResponse struct {
+	OperationRequest       *OperationRequest       `xml:"OperationRequest,omitempty"`
+	RejectAssignmentResult *RejectAssignmentResult `xml:"RejectAssignmentResult,omitempty"`
+}
+
+type approveRejectedAssignmentResponse struct {
+	OperationRequest                *OperationRequest                `xml:"OperationRequest,omitempty"`
+	ApproveRejectedAssignmentResult *ApproveRejectedAssignmentResult `xml:"ApproveRejectedAssignmentResult,omitempty"`
+}
+
+type getAssignmentsForHITResponse struct {
+	OperationRequest           *OperationRequest           `xml:"OperationRequest,omitempty"`
+	GetAssignmentsForHITResult *GetAssignmentsForHITResult `xml:"GetAssignmentsForHITResult,omitempty"`
+}
+
+type getFileUploadURLResponse struct {
+	OperationRequest       *OperationRequest       `xml:"OperationRequest,omitempty"`
+	GetFileUploadURLResult *GetFileUploadURLResult `xml:"GetFileUploadURLResult,omitempty"`
+}
+
+type searchHITsResponse struct {
+	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
+	SearchHITsResult *SearchHITsResult `xml:"SearchHITsResult,omitempty"`
+}
+
+type grantBonusResponse struct {
+	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
+	GrantBonusResult *GrantBonusResult `xml:"GrantBonusResult,omitempty"`
+}
+
+type getBonusPaymentsResponse struct {
+	OperationRequest       *OperationRequest       `xml:"OperationRequest,omitempty"`
+	GetBonusPaymentsResult *GetBonusPaymentsResult `xml:"GetBonusPaymentsResult,omitempty"`
+}
+
+type changeHITTypeOfHITResponse struct {
+	OperationRequest         *OperationRequest         `xml:"OperationRequest,omitempty"`
+	ChangeHITTypeOfHITResult *ChangeHITTypeOfHITResult `xml:"ChangeHITTypeOfHITResult,omitempty"`
+}
+
+type createQualificationTypeResponse struct {
+	OperationRequest  *OperationRequest  `xml:"OperationRequest,omitempty"`
+	QualificationType *QualificationType `xml:"QualificationType,omitempty"`
+}
+
+type disposeQualificationTypeResponse struct {
+	OperationRequest               *OperationRequest               `xml:"OperationRequest,omitempty"`
+	DisposeQualificationTypeResult *DisposeQualificationTypeResult `xml:"DisposeQualificationTypeResult,omitempty"`
+}
+
+type getQualificationRequestsResponse struct {
+	OperationRequest               *OperationRequest               `xml:"OperationRequest,omitempty"`
+	GetQualificationRequestsResult *GetQualificationRequestsResult `xml:"GetQualificationRequestsResult,omitempty"`
+}
+
+type rejectQualificationRequestResponse struct {
+	OperationRequest                 *OperationRequest                 `xml:"OperationRequest,omitempty"`
+	RejectQualificationRequestResult *RejectQualificationRequestResult `xml:"RejectQualificationRequestResult,omitempty"`
+}
+
+type grantQualificationResponse struct {
+	OperationRequest         *OperationRequest         `xml:"OperationRequest,omitempty"`
+	GrantQualificationResult *GrantQualificationResult `xml:"GrantQualificationResult,omitempty"`
+}
+
+type assignQualificationResponse struct {
+	OperationRequest          *OperationRequest          `xml:"OperationRequest,omitempty"`
+	AssignQualificationResult *AssignQualificationResult `xml:"AssignQualificationResult,omitempty"`
+}
+
+type revokeQualificationResponse struct {
+	OperationRequest          *OperationRequest          `xml:"OperationRequest,omitempty"`
+	RevokeQualificationResult *RevokeQualificationResult `xml:"RevokeQualificationResult,omitempty"`
+}
+
+type updateQualificationScoreResponse struct {
+	OperationRequest               *OperationRequest               `xml:"OperationRequest,omitempty"`
+	UpdateQualificationScoreResult *UpdateQualificationScoreResult `xml:"UpdateQualificationScoreResult,omitempty"`
+}
+
+type getQualificationTypeResponse struct {
+	OperationRequest  *OperationRequest  `xml:"OperationRequest,omitempty"`
+	QualificationType *QualificationType `xml:"QualificationType,omitempty"`
+}
+
+type getQualificationScoreResponse struct {
+	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
+	Qualification    *Qualification    `xml:"Qualification,omitempty"`
+}
+
+type searchQualificationTypesResponse struct {
+	OperationRequest               *OperationRequest               `xml:"OperationRequest,omitempty"`
+	SearchQualificationTypesResult *SearchQualificationTypesResult `xml:"SearchQualificationTypesResult,omitempty"`
+}
+
+type updateQualificationTypeResponse struct {
+	OperationRequest  *OperationRequest  `xml:"OperationRequest,omitempty"`
+	QualificationType *QualificationType `xml:"QualificationType,omitempty"`
+}
+
+type getAccountBalanceResponse struct {
 	OperationRequest        *OperationRequest        `xml:"OperationRequest,omitempty"`
 	GetAccountBalanceResult *GetAccountBalanceResult `xml:"GetAccountBalanceResult,omitempty"`
 }
 
-type GetRequesterStatisticResponse struct {
-	OperationRequest   *OperationRequest     `xml:"OperationRequest,omitempty"`
-	GetStatisticResult []*GetStatisticResult `xml:"GetStatisticResult,omitempty"`
+type getRequesterStatisticResponse struct {
+	OperationRequest   *OperationRequest   `xml:"OperationRequest,omitempty"`
+	GetStatisticResult *GetStatisticResult `xml:"GetStatisticResult,omitempty"`
 }
 
-type GetRequesterWorkerStatisticResponse struct {
-	OperationRequest   *OperationRequest     `xml:"OperationRequest,omitempty"`
-	GetStatisticResult []*GetStatisticResult `xml:"GetStatisticResult,omitempty"`
+type getRequesterWorkerStatisticResponse struct {
+	OperationRequest   *OperationRequest   `xml:"OperationRequest,omitempty"`
+	GetStatisticResult *GetStatisticResult `xml:"GetStatisticResult,omitempty"`
 }
 
-type NotifyWorkersResponse struct {
-	OperationRequest    *OperationRequest      `xml:"OperationRequest,omitempty"`
-	NotifyWorkersResult []*NotifyWorkersResult `xml:"NotifyWorkersResult,omitempty"`
+type notifyWorkersResponse struct {
+	OperationRequest    *OperationRequest    `xml:"OperationRequest,omitempty"`
+	NotifyWorkersResult *NotifyWorkersResult `xml:"NotifyWorkersResult,omitempty"`
 }
 
-type GetBlockedWorkersResponse struct {
-	OperationRequest        *OperationRequest          `xml:"OperationRequest,omitempty"`
-	GetBlockedWorkersResult []*GetBlockedWorkersResult `xml:"GetBlockedWorkersResult,omitempty"`
+type getBlockedWorkersResponse struct {
+	OperationRequest        *OperationRequest        `xml:"OperationRequest,omitempty"`
+	GetBlockedWorkersResult *GetBlockedWorkersResult `xml:"GetBlockedWorkersResult,omitempty"`
 }
 
-type BlockWorkerResponse struct {
-	OperationRequest  *OperationRequest    `xml:"OperationRequest,omitempty"`
-	BlockWorkerResult []*BlockWorkerResult `xml:"BlockWorkerResult,omitempty"`
+type blockWorkerResponse struct {
+	OperationRequest  *OperationRequest  `xml:"OperationRequest,omitempty"`
+	BlockWorkerResult *BlockWorkerResult `xml:"BlockWorkerResult,omitempty"`
 }
 
-type UnblockWorkerResponse struct {
-	OperationRequest    *OperationRequest      `xml:"OperationRequest,omitempty"`
-	UnblockWorkerResult []*UnblockWorkerResult `xml:"UnblockWorkerResult,omitempty"`
+type unblockWorkerResponse struct {
+	OperationRequest    *OperationRequest    `xml:"OperationRequest,omitempty"`
+	UnblockWorkerResult *UnblockWorkerResult `xml:"UnblockWorkerResult,omitempty"`
 }
 
 type OperationRequest struct {
@@ -509,9 +509,9 @@ type Errors struct {
 	} `xml:"Error,omitempty"`
 }
 
-type HelpResponse struct {
+type helpResponse struct {
 	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
-	Information      []*Information    `xml:"Information,omitempty"`
+	Information      *Information      `xml:"Information,omitempty"`
 }
 
 type Information struct {

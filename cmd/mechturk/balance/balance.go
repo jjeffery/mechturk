@@ -22,12 +22,11 @@ func init() {
 
 func run(cmd *cobra.Command, args []string) {
 	client := mechturk.New(nil)
-	resp, err := client.GetAccountBalance(&mechturk.GetAccountBalanceRequest{
+	result, err := client.GetAccountBalance(&mechturk.GetAccountBalanceRequest{
 		ResponseGroup: global.GetResponseGroups(),
 	})
 	if err != nil {
 		log.Fatal("error: ", err)
 	}
-	result := resp.GetAccountBalanceResult
 	fmt.Println(mechturk.Prettify(result))
 }

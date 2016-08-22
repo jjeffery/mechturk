@@ -25,13 +25,12 @@ func run(cmd *cobra.Command, args []string) {
 		log.Fatalf("usage: %s dispose-hit <HIT-ID>", global.ProgramName)
 	}
 	client := mechturk.New()
-	resp, err := client.DisposeHIT(&mechturk.DisposeHITRequest{
+	result, err := client.DisposeHIT(&mechturk.DisposeHITRequest{
 		HITId:         args[0],
 		ResponseGroup: global.GetResponseGroups(),
 	})
 	if err != nil {
 		log.Fatal("error: ", err)
 	}
-	result := resp.DisposeHITResult
 	fmt.Println(mechturk.Prettify(result))
 }

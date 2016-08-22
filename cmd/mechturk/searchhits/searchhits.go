@@ -47,7 +47,7 @@ func init() {
 
 func run(cmd *cobra.Command, args []string) {
 	client := mechturk.New()
-	resp, err := client.SearchHITs(&mechturk.SearchHITsRequest{
+	result, err := client.SearchHITs(&mechturk.SearchHITsRequest{
 		SortDirection: getSortDirection(),
 		SortProperty:  getSortProperty(),
 		PageNumber:    pageNumber,
@@ -61,7 +61,6 @@ func run(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal("error: ", err)
 	}
-	result := resp.SearchHITsResult
 	fmt.Println(mechturk.Prettify(result))
 }
 

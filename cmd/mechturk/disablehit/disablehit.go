@@ -25,13 +25,12 @@ func run(cmd *cobra.Command, args []string) {
 		log.Fatalf("usage: %s disable-hit <HIT-ID>", global.ProgramName)
 	}
 	client := mechturk.New()
-	resp, err := client.DisableHIT(&mechturk.DisableHITRequest{
+	result, err := client.DisableHIT(&mechturk.DisableHITRequest{
 		HITId:         args[0],
 		ResponseGroup: global.GetResponseGroups(),
 	})
 	if err != nil {
 		log.Fatal("error: ", err)
 	}
-	result := resp.DisableHITResult
 	fmt.Println(mechturk.Prettify(result))
 }

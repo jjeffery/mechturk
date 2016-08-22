@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+var (
+	errMissingResult = errors.New("missing result")
+)
+
 type errorT struct {
 	code    string
 	message string

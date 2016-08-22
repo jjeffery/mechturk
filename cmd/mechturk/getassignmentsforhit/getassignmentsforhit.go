@@ -51,7 +51,7 @@ func run(cmd *cobra.Command, args []string) {
 	}
 	hitId := args[0]
 	client := mechturk.New()
-	resp, err := client.GetAssignmentsForHIT(&mechturk.GetAssignmentsForHITRequest{
+	result, err := client.GetAssignmentsForHIT(&mechturk.GetAssignmentsForHITRequest{
 		SortDirection: getSortDirection(),
 		SortProperty:  getSortProperty(),
 		PageNumber:    pageNumber,
@@ -64,7 +64,6 @@ func run(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal("error: ", err)
 	}
-	result := resp.GetAssignmentsForHITResult
 	fmt.Println(mechturk.Prettify(result))
 }
 
