@@ -7,6 +7,8 @@ import (
 
 	_ "github.com/jjeffery/mechturk/cmd/mechturk/balance"
 	_ "github.com/jjeffery/mechturk/cmd/mechturk/disablehit"
+	_ "github.com/jjeffery/mechturk/cmd/mechturk/disposehit"
+	_ "github.com/jjeffery/mechturk/cmd/mechturk/getassignmentsforhit"
 	_ "github.com/jjeffery/mechturk/cmd/mechturk/searchhits"
 )
 

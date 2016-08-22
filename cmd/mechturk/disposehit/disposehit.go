@@ -1,4 +1,4 @@
-package disablehit
+package disposehit
 
 import (
 	"fmt"
@@ -12,9 +12,9 @@ import (
 
 func init() {
 	command := &cobra.Command{
-		Use:     "disable-hit",
-		Aliases: []string{"disable"},
-		Short:   "disable HIT",
+		Use:     "dispose-hit",
+		Aliases: []string{"dispose"},
+		Short:   "dispose HIT",
 		Run:     run,
 	}
 	global.Command.AddCommand(command)
@@ -22,16 +22,16 @@ func init() {
 
 func run(cmd *cobra.Command, args []string) {
 	if len(args) != 1 {
-		log.Fatalf("usage: %s disable-hit <HIT-ID>", global.ProgramName)
+		log.Fatalf("usage: %s dispose-hit <HIT-ID>", global.ProgramName)
 	}
 	client := mechturk.New()
-	resp, err := client.DisableHIT(&mechturk.DisableHITRequest{
+	resp, err := client.DisposeHIT(&mechturk.DisposeHITRequest{
 		HITId:         args[0],
 		ResponseGroup: global.GetResponseGroups(),
 	})
 	if err != nil {
 		log.Fatal("error: ", err)
 	}
-	result := resp.DisableHITResult
+	result := resp.DisposeHITResult
 	fmt.Println(mechturk.Prettify(result))
 }
