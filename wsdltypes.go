@@ -222,7 +222,7 @@ const (
 // http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html.
 type CreateHITResponse struct {
 	OperationRequest *OperationRequest `xml:"OperationRequest,omitempty"`
-	HIT              []*HIT            `xml:"HIT,omitempty"`
+	HIT              *HIT              `xml:"HIT,omitempty"`
 }
 
 type RegisterHITTypeResponse struct {

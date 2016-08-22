@@ -46,7 +46,12 @@ func (mt *MechTurk) ApproveAssignment(request *ApproveAssignmentRequest) (*Appro
 	if err != nil {
 		return nil, err
 	}
-
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.ApproveAssignmentResult[0].Request); err != nil {
+		return nil, err
+	}
 	return response, nil
 }
 
@@ -57,6 +62,12 @@ func (mt *MechTurk) GetAccountBalance(request *GetAccountBalanceRequest) (*GetAc
 	if err := mt.call(operation, request, response); err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetAccountBalanceResult.Request); err != nil {
+		return nil, err
+	}
 	return response, nil
 }
 
@@ -65,6 +76,12 @@ func (mt *MechTurk) CreateHIT(request *CreateHITRequest) (*CreateHITResponse, er
 	response := new(CreateHITResponse)
 	err := mt.call("CreateHIT", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err = checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.HIT.Request); err != nil {
 		return nil, err
 	}
 
@@ -78,6 +95,12 @@ func (mt *MechTurk) RegisterHITType(request *RegisterHITTypeRequest) (*RegisterH
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.RegisterHITTypeResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -87,6 +110,12 @@ func (mt *MechTurk) SetHITTypeNotification(request *SetHITTypeNotificationReques
 	response := new(SetHITTypeNotificationResponse)
 	err := mt.call("SetHITTypeNotification", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.SetHITTypeNotificationResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -100,6 +129,12 @@ func (mt *MechTurk) SendTestEventNotification(request *SendTestEventNotification
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.SendTestEventNotificationResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -109,6 +144,12 @@ func (mt *MechTurk) DisposeHIT(request *DisposeHITRequest) (*DisposeHITResponse,
 	response := new(DisposeHITResponse)
 	err := mt.call("DisposeHIT", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.DisposeHITResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -122,6 +163,12 @@ func (mt *MechTurk) DisableHIT(request *DisableHITRequest) (*DisableHITResponse,
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.DisableHITResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -131,6 +178,12 @@ func (mt *MechTurk) GetHIT(request *GetHITRequest) (*GetHITResponse, error) {
 	response := new(GetHITResponse)
 	err := mt.call("GetHIT", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.HIT[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -144,6 +197,12 @@ func (mt *MechTurk) GetAssignment(request *GetAssignmentRequest) (*GetAssignment
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetAssignmentResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -153,6 +212,12 @@ func (mt *MechTurk) GetReviewResultsForHIT(request *GetReviewResultsForHITReques
 	response := new(GetReviewResultsForHITResponse)
 	err := mt.call("GetReviewResultsForHIT", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetReviewResultsForHITResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -166,6 +231,12 @@ func (mt *MechTurk) GetReviewableHITs(request *GetReviewableHITsRequest) (*GetRe
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetReviewableHITsResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -175,6 +246,12 @@ func (mt *MechTurk) GetHITsForQualificationType(request *GetHITsForQualification
 	response := new(GetHITsForQualificationTypeResponse)
 	err := mt.call("GetHITsForQualificationType", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetHITsForQualificationTypeResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -188,6 +265,12 @@ func (mt *MechTurk) GetQualificationsForQualificationType(request *GetQualificat
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetQualificationsForQualificationTypeResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -197,6 +280,12 @@ func (mt *MechTurk) SetHITAsReviewing(request *SetHITAsReviewingRequest) (*SetHI
 	response := new(SetHITAsReviewingResponse)
 	err := mt.call("SetHITAsReviewing", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.SetHITAsReviewingResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -210,6 +299,12 @@ func (c *MechTurk) ExtendHIT(request *ExtendHITRequest) (*ExtendHITResponse, err
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.ExtendHITResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -219,6 +314,12 @@ func (mt *MechTurk) ForceExpireHIT(request *ForceExpireHITRequest) (*ForceExpire
 	response := new(ForceExpireHITResponse)
 	err := mt.call("ForceExpireHIT", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.ForceExpireHITResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -232,6 +333,12 @@ func (mt *MechTurk) RejectAssignment(request *RejectAssignmentRequest) (*RejectA
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.RejectAssignmentResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -241,6 +348,12 @@ func (mt *MechTurk) ApproveRejectedAssignment(request *ApproveRejectedAssignment
 	response := new(ApproveRejectedAssignmentResponse)
 	err := mt.call("ApproveRejectedAssignment", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.ApproveRejectedAssignmentResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -254,6 +367,12 @@ func (mt *MechTurk) GetAssignmentsForHIT(request *GetAssignmentsForHITRequest) (
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetAssignmentsForHITResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -263,6 +382,12 @@ func (mt *MechTurk) GetFileUploadURL(request *GetFileUploadURLRequest) (*GetFile
 	response := new(GetFileUploadURLResponse)
 	err := mt.call("GetFileUploadURL", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetFileUploadURLResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -276,6 +401,12 @@ func (mt *MechTurk) SearchHITs(request *SearchHITsRequest) (*SearchHITsResponse,
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.SearchHITsResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -285,6 +416,12 @@ func (mt *MechTurk) GrantBonus(request *GrantBonusRequest) (*GrantBonusResponse,
 	response := new(GrantBonusResponse)
 	err := mt.call("GrantBonus", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GrantBonusResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -298,6 +435,12 @@ func (mt *MechTurk) GetBonusPayments(request *GetBonusPaymentsRequest) (*GetBonu
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetBonusPaymentsResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -307,6 +450,12 @@ func (mt *MechTurk) ChangeHITTypeOfHIT(request *ChangeHITTypeOfHITRequest) (*Cha
 	response := new(ChangeHITTypeOfHITResponse)
 	err := mt.call("ChangeHITTypeOfHIT", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.ChangeHITTypeOfHITResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -320,6 +469,12 @@ func (mt *MechTurk) CreateQualificationType(request *CreateQualificationTypeRequ
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.QualificationType[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -329,6 +484,12 @@ func (mt *MechTurk) GrantQualification(request *GrantQualificationRequest) (*Gra
 	response := new(GrantQualificationResponse)
 	err := mt.call("GrantQualification", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GrantQualificationResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -342,6 +503,12 @@ func (mt *MechTurk) AssignQualification(request *AssignQualificationRequest) (*A
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.AssignQualificationResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -351,6 +518,12 @@ func (mt *MechTurk) RevokeQualification(request *RevokeQualificationRequest) (*R
 	response := new(RevokeQualificationResponse)
 	err := mt.call("RevokeQualification", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.RevokeQualificationResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -364,6 +537,12 @@ func (mt *MechTurk) GetQualificationType(request *GetQualificationTypeRequest) (
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.QualificationType[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -373,6 +552,12 @@ func (mt *MechTurk) GetQualificationRequests(request *GetQualificationRequestsRe
 	response := new(GetQualificationRequestsResponse)
 	err := mt.call("GetQualificationRequests", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetQualificationRequestsResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -386,6 +571,12 @@ func (mt *MechTurk) RejectQualificationRequest(request *RejectQualificationReque
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.RejectQualificationRequestResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -395,6 +586,12 @@ func (mt *MechTurk) UpdateQualificationType(request *UpdateQualificationTypeRequ
 	response := new(UpdateQualificationTypeResponse)
 	err := mt.call("UpdateQualificationType", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.QualificationType[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -408,6 +605,12 @@ func (mt *MechTurk) SearchQualificationTypes(request *SearchQualificationTypesRe
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.SearchQualificationTypesResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -417,6 +620,12 @@ func (mt *MechTurk) GetQualificationScore(request *GetQualificationScoreRequest)
 	response := new(GetQualificationScoreResponse)
 	err := mt.call("GetQualificationScore", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.Qualification[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -430,6 +639,12 @@ func (mt *MechTurk) UpdateQualificationScore(request *UpdateQualificationScoreRe
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.UpdateQualificationScoreResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -439,6 +654,12 @@ func (mt *MechTurk) DisposeQualificationType(request *DisposeQualificationTypeRe
 	response := new(DisposeQualificationTypeResponse)
 	err := mt.call("DisposeQualificationType", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.DisposeQualificationTypeResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -452,6 +673,12 @@ func (mt *MechTurk) GetRequesterStatistic(request *GetRequesterStatisticRequest)
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetStatisticResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -461,6 +688,12 @@ func (mt *MechTurk) GetRequesterWorkerStatistic(request *GetRequesterWorkerStati
 	response := new(GetRequesterWorkerStatisticResponse)
 	err := mt.call("GetRequesterWorkerStatistic", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetStatisticResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -474,6 +707,12 @@ func (mt *MechTurk) NotifyWorkers(request *NotifyWorkersRequest) (*NotifyWorkers
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.NotifyWorkersResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -483,6 +722,12 @@ func (mt *MechTurk) GetBlockedWorkers(request *GetBlockedWorkersRequest) (*GetBl
 	response := new(GetBlockedWorkersResponse)
 	err := mt.call("GetBlockedWorkers", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.GetBlockedWorkersResult[0].Request); err != nil {
 		return nil, err
 	}
 
@@ -496,6 +741,12 @@ func (mt *MechTurk) BlockWorker(request *BlockWorkerRequest) (*BlockWorkerRespon
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.BlockWorkerResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -507,6 +758,12 @@ func (mt *MechTurk) UnblockWorker(request *UnblockWorkerRequest) (*UnblockWorker
 	if err != nil {
 		return nil, err
 	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.UnblockWorkerResult[0].Request); err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
@@ -516,6 +773,12 @@ func (mt *MechTurk) Help(request *HelpRequest) (*HelpResponse, error) {
 	response := new(HelpResponse)
 	err := mt.call("Help", request, response)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkOperationRequest(response.OperationRequest); err != nil {
+		return nil, err
+	}
+	if err := checkRequest(response.Information[0].Request); err != nil {
 		return nil, err
 	}
 
