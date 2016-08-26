@@ -10,6 +10,7 @@ package mechturk
 // * Arrays changed to scalars where only one item is possible
 //   for example, GetAccountBalanceResponse contains only one
 //   result where the auto-generated WSDL allows for multiples.
+// * Return xxxResult instead of xxxResponse types.
 //
 // Ideally it would be a good idea to fork gowsdl and create
 // a generator that produces code, but this is unlikely to
