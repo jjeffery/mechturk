@@ -592,15 +592,15 @@ type HIT struct {
 	HITStatus                    *HITStatus                  `xml:"HITStatus,omitempty"`
 	MaxAssignments               int32                       `xml:"MaxAssignments,omitempty"`
 	Reward                       *Price                      `xml:"Reward,omitempty"`
-	AutoApprovalDelayInSeconds   int64                       `xml:"AutoApprovalDelayInSeconds,omitempty"`
+	AutoApprovalDelayInSeconds   int                         `xml:"AutoApprovalDelayInSeconds,omitempty"`
 	Expiration                   time.Time                   `xml:"Expiration,omitempty"`
-	AssignmentDurationInSeconds  int64                       `xml:"AssignmentDurationInSeconds,omitempty"`
+	AssignmentDurationInSeconds  int                         `xml:"AssignmentDurationInSeconds,omitempty"`
 	RequesterAnnotation          string                      `xml:"RequesterAnnotation,omitempty"`
 	QualificationRequirement     []*QualificationRequirement `xml:"QualificationRequirement,omitempty"`
 	HITReviewStatus              *HITReviewStatus            `xml:"HITReviewStatus,omitempty"`
-	NumberOfAssignmentsPending   int32                       `xml:"NumberOfAssignmentsPending,omitempty"`
-	NumberOfAssignmentsAvailable int32                       `xml:"NumberOfAssignmentsAvailable,omitempty"`
-	NumberOfAssignmentsCompleted int32                       `xml:"NumberOfAssignmentsCompleted,omitempty"`
+	NumberOfAssignmentsPending   int                         `xml:"NumberOfAssignmentsPending,omitempty"`
+	NumberOfAssignmentsAvailable int                         `xml:"NumberOfAssignmentsAvailable,omitempty"`
+	NumberOfAssignmentsCompleted int                         `xml:"NumberOfAssignmentsCompleted,omitempty"`
 }
 
 type ReviewPolicy struct {
