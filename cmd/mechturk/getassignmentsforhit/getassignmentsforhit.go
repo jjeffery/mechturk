@@ -14,8 +14,8 @@ import (
 var (
 	sortDirection string
 	sortProperty  string
-	pageNumber    int32
-	pageSize      int32
+	pageNumber    int
+	pageSize      int
 
 	sortDirections mtcmd.StringSelection
 	sortProperties mtcmd.StringSelection
@@ -30,8 +30,8 @@ func init() {
 	}
 	command.PersistentFlags().StringVar(&sortDirection, "sort-direction", "", "sort direction")
 	command.PersistentFlags().StringVar(&sortProperty, "sort-property", "", "sort property")
-	command.PersistentFlags().Int32Var(&pageNumber, "page-number", 0, "page number")
-	command.PersistentFlags().Int32Var(&pageSize, "page-size", 0, "page size")
+	command.PersistentFlags().IntVar(&pageNumber, "page-number", 0, "page number")
+	command.PersistentFlags().IntVar(&pageSize, "page-size", 0, "page size")
 	global.Command.AddCommand(command)
 
 	sortDirections = mtcmd.NewStringSelection("sort direction",

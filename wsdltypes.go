@@ -11,6 +11,8 @@ package mechturk
 //   for example, GetAccountBalanceResponse contains only one
 //   result where the auto-generated WSDL allows for multiples.
 // * Return xxxResult instead of xxxResponse types.
+// * Used int type instead of int32 for page numbers, num results, and max assignments.
+// * Used int type instead of int64 for time duration in seconds.
 //
 // Ideally it would be a good idea to fork gowsdl and create
 // a generator that produces code, but this is unlikely to
@@ -591,7 +593,7 @@ type HIT struct {
 	Question                     string                      `xml:"Question,omitempty"`
 	Keywords                     string                      `xml:"Keywords,omitempty"`
 	HITStatus                    *HITStatus                  `xml:"HITStatus,omitempty"`
-	MaxAssignments               int32                       `xml:"MaxAssignments,omitempty"`
+	MaxAssignments               int                         `xml:"MaxAssignments,omitempty"`
 	Reward                       *Price                      `xml:"Reward,omitempty"`
 	AutoApprovalDelayInSeconds   int                         `xml:"AutoApprovalDelayInSeconds,omitempty"`
 	Expiration                   time.Time                   `xml:"Expiration,omitempty"`
@@ -629,10 +631,10 @@ type HITLayoutParameter struct {
 // http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_CreateHITOperation.html.
 type CreateHITRequest struct {
 	HITTypeId                   string                      `xml:"HITTypeId,omitempty"`
-	MaxAssignments              int32                       `xml:"MaxAssignments,omitempty"`
-	AutoApprovalDelayInSeconds  int64                       `xml:"AutoApprovalDelayInSeconds,omitempty"`
-	LifetimeInSeconds           int64                       `xml:"LifetimeInSeconds,omitempty"`
-	AssignmentDurationInSeconds int64                       `xml:"AssignmentDurationInSeconds,omitempty"`
+	MaxAssignments              int                         `xml:"MaxAssignments,omitempty"`
+	AutoApprovalDelayInSeconds  int                         `xml:"AutoApprovalDelayInSeconds,omitempty"`
+	LifetimeInSeconds           int                         `xml:"LifetimeInSeconds,omitempty"`
+	AssignmentDurationInSeconds int                         `xml:"AssignmentDurationInSeconds,omitempty"`
 	Reward                      *Price                      `xml:"Reward,omitempty"`
 	Title                       string                      `xml:"Title,omitempty"`
 	Keywords                    string                      `xml:"Keywords,omitempty"`
@@ -649,8 +651,8 @@ type CreateHITRequest struct {
 }
 
 type RegisterHITTypeRequest struct {
-	AutoApprovalDelayInSeconds  int64                       `xml:"AutoApprovalDelayInSeconds,omitempty"`
-	AssignmentDurationInSeconds int64                       `xml:"AssignmentDurationInSeconds,omitempty"`
+	AutoApprovalDelayInSeconds  int                         `xml:"AutoApprovalDelayInSeconds,omitempty"`
+	AssignmentDurationInSeconds int                         `xml:"AssignmentDurationInSeconds,omitempty"`
 	Reward                      *Price                      `xml:"Reward,omitempty"`
 	Title                       string                      `xml:"Title,omitempty"`
 	Keywords                    string                      `xml:"Keywords,omitempty"`
@@ -722,23 +724,23 @@ type GetReviewableHITsRequest struct {
 	Status        *ReviewableHITStatus           `xml:"Status,omitempty"`
 	SortDirection *SortDirection                 `xml:"SortDirection,omitempty"`
 	SortProperty  *GetReviewableHITsSortProperty `xml:"SortProperty,omitempty"`
-	PageNumber    int32                          `xml:"PageNumber,omitempty"`
-	PageSize      int32                          `xml:"PageSize,omitempty"`
+	PageNumber    int                            `xml:"PageNumber,omitempty"`
+	PageSize      int                            `xml:"PageSize,omitempty"`
 	ResponseGroup []string                       `xml:"ResponseGroup,omitempty"`
 }
 
 type GetReviewableHITsResult struct {
 	Request         *Request `xml:"Request,omitempty"`
-	PageNumber      int32    `xml:"PageNumber,omitempty"`
-	NumResults      int32    `xml:"NumResults,omitempty"`
-	TotalNumResults int32    `xml:"TotalNumResults,omitempty"`
+	PageNumber      int      `xml:"PageNumber,omitempty"`
+	NumResults      int      `xml:"NumResults,omitempty"`
+	TotalNumResults int      `xml:"TotalNumResults,omitempty"`
 	HIT             []*HIT   `xml:"HIT,omitempty"`
 }
 
 type ReviewReport struct {
-	PageNumber      int32                 `xml:"PageNumber,omitempty"`
-	NumResults      int32                 `xml:"NumResults,omitempty"`
-	TotalNumResults int32                 `xml:"TotalNumResults,omitempty"`
+	PageNumber      int                   `xml:"PageNumber,omitempty"`
+	NumResults      int                   `xml:"NumResults,omitempty"`
+	TotalNumResults int                   `xml:"TotalNumResults,omitempty"`
 	ReviewResult    []*ReviewResultDetail `xml:"ReviewResult,omitempty"`
 	ReviewAction    []*ReviewActionDetail `xml:"ReviewAction,omitempty"`
 }
@@ -768,8 +770,8 @@ type GetReviewResultsForHITRequest struct {
 	PolicyLevel     []*ReviewPolicyLevel `xml:"PolicyLevel,omitempty"`
 	RetrieveActions bool                 `xml:"RetrieveActions,omitempty"`
 	RetrieveResults bool                 `xml:"RetrieveResults,omitempty"`
-	PageNumber      int32                `xml:"PageNumber,omitempty"`
-	PageSize        int32                `xml:"PageSize,omitempty"`
+	PageNumber      int                  `xml:"PageNumber,omitempty"`
+	PageSize        int                  `xml:"PageSize,omitempty"`
 	ResponseGroup   []string             `xml:"ResponseGroup,omitempty"`
 }
 
@@ -784,32 +786,32 @@ type GetReviewResultsForHITResult struct {
 
 type GetHITsForQualificationTypeRequest struct {
 	QualificationTypeId string   `xml:"QualificationTypeId,omitempty"`
-	PageNumber          int32    `xml:"PageNumber,omitempty"`
-	PageSize            int32    `xml:"PageSize,omitempty"`
+	PageNumber          int      `xml:"PageNumber,omitempty"`
+	PageSize            int      `xml:"PageSize,omitempty"`
 	ResponseGroup       []string `xml:"ResponseGroup,omitempty"`
 }
 
 type GetHITsForQualificationTypeResult struct {
 	Request         *Request `xml:"Request,omitempty"`
-	PageNumber      int32    `xml:"PageNumber,omitempty"`
-	NumResults      int32    `xml:"NumResults,omitempty"`
-	TotalNumResults int32    `xml:"TotalNumResults,omitempty"`
+	PageNumber      int      `xml:"PageNumber,omitempty"`
+	NumResults      int      `xml:"NumResults,omitempty"`
+	TotalNumResults int      `xml:"TotalNumResults,omitempty"`
 	HIT             []*HIT   `xml:"HIT,omitempty"`
 }
 
 type GetQualificationsForQualificationTypeRequest struct {
 	QualificationTypeId string               `xml:"QualificationTypeId,omitempty"`
 	Status              *QualificationStatus `xml:"Status,omitempty"`
-	PageNumber          int32                `xml:"PageNumber,omitempty"`
-	PageSize            int32                `xml:"PageSize,omitempty"`
+	PageNumber          int                  `xml:"PageNumber,omitempty"`
+	PageSize            int                  `xml:"PageSize,omitempty"`
 	ResponseGroup       []string             `xml:"ResponseGroup,omitempty"`
 }
 
 type GetQualificationsForQualificationTypeResult struct {
 	Request         *Request         `xml:"Request,omitempty"`
-	PageNumber      int32            `xml:"PageNumber,omitempty"`
-	NumResults      int32            `xml:"NumResults,omitempty"`
-	TotalNumResults int32            `xml:"TotalNumResults,omitempty"`
+	PageNumber      int              `xml:"PageNumber,omitempty"`
+	NumResults      int              `xml:"NumResults,omitempty"`
+	TotalNumResults int              `xml:"TotalNumResults,omitempty"`
 	Qualification   []*Qualification `xml:"Qualification,omitempty"`
 }
 
@@ -825,8 +827,8 @@ type SetHITAsReviewingResult struct {
 
 type ExtendHITRequest struct {
 	HITId                        string   `xml:"HITId,omitempty"`
-	MaxAssignmentsIncrement      int32    `xml:"MaxAssignmentsIncrement,omitempty"`
-	ExpirationIncrementInSeconds int64    `xml:"ExpirationIncrementInSeconds,omitempty"`
+	MaxAssignmentsIncrement      int      `xml:"MaxAssignmentsIncrement,omitempty"`
+	ExpirationIncrementInSeconds int      `xml:"ExpirationIncrementInSeconds,omitempty"`
 	UniqueRequestToken           string   `xml:"UniqueRequestToken,omitempty"`
 	ResponseGroup                []string `xml:"ResponseGroup,omitempty"`
 }
@@ -894,17 +896,17 @@ type GetAssignmentsForHITRequest struct {
 	HITId            string                            `xml:"HITId,omitempty"`
 	SortDirection    *SortDirection                    `xml:"SortDirection,omitempty"`
 	SortProperty     *GetAssignmentsForHITSortProperty `xml:"SortProperty,omitempty"`
-	PageNumber       int32                             `xml:"PageNumber,omitempty"`
-	PageSize         int32                             `xml:"PageSize,omitempty"`
+	PageNumber       int                               `xml:"PageNumber,omitempty"`
+	PageSize         int                               `xml:"PageSize,omitempty"`
 	AssignmentStatus []*AssignmentStatus               `xml:"AssignmentStatus,omitempty"`
 	ResponseGroup    []string                          `xml:"ResponseGroup,omitempty"`
 }
 
 type GetAssignmentsForHITResult struct {
 	Request         *Request      `xml:"Request,omitempty"`
-	PageNumber      int32         `xml:"PageNumber,omitempty"`
-	NumResults      int32         `xml:"NumResults,omitempty"`
-	TotalNumResults int32         `xml:"TotalNumResults,omitempty"`
+	PageNumber      int           `xml:"PageNumber,omitempty"`
+	NumResults      int           `xml:"NumResults,omitempty"`
+	TotalNumResults int           `xml:"TotalNumResults,omitempty"`
 	Assignment      []*Assignment `xml:"Assignment,omitempty"`
 }
 
@@ -921,16 +923,16 @@ type GetFileUploadURLResult struct {
 type SearchHITsRequest struct {
 	SortDirection *SortDirection          `xml:"SortDirection,omitempty"`
 	SortProperty  *SearchHITsSortProperty `xml:"SortProperty,omitempty"`
-	PageNumber    int32                   `xml:"PageNumber,omitempty"`
-	PageSize      int32                   `xml:"PageSize,omitempty"`
+	PageNumber    int                     `xml:"PageNumber,omitempty"`
+	PageSize      int                     `xml:"PageSize,omitempty"`
 	ResponseGroup []string                `xml:"ResponseGroup,omitempty"`
 }
 
 type SearchHITsResult struct {
 	Request         *Request `xml:"Request,omitempty"`
-	PageNumber      int32    `xml:"PageNumber,omitempty"`
-	NumResults      int32    `xml:"NumResults,omitempty"`
-	TotalNumResults int32    `xml:"TotalNumResults,omitempty"`
+	PageNumber      int      `xml:"PageNumber,omitempty"`
+	NumResults      int      `xml:"NumResults,omitempty"`
+	TotalNumResults int      `xml:"TotalNumResults,omitempty"`
 	HIT             []*HIT   `xml:"HIT,omitempty"`
 }
 
@@ -959,16 +961,16 @@ type BonusPayment struct {
 type GetBonusPaymentsRequest struct {
 	HITId         string   `xml:"HITId,omitempty"`
 	AssignmentId  string   `xml:"AssignmentId,omitempty"`
-	PageNumber    int32    `xml:"PageNumber,omitempty"`
-	PageSize      int32    `xml:"PageSize,omitempty"`
+	PageNumber    int      `xml:"PageNumber,omitempty"`
+	PageSize      int      `xml:"PageSize,omitempty"`
 	ResponseGroup []string `xml:"ResponseGroup,omitempty"`
 }
 
 type GetBonusPaymentsResult struct {
 	Request         *Request        `xml:"Request,omitempty"`
-	NumResults      int32           `xml:"NumResults,omitempty"`
-	PageNumber      int32           `xml:"PageNumber,omitempty"`
-	TotalNumResults int32           `xml:"TotalNumResults,omitempty"`
+	NumResults      int             `xml:"NumResults,omitempty"`
+	PageNumber      int             `xml:"PageNumber,omitempty"`
+	TotalNumResults int             `xml:"TotalNumResults,omitempty"`
 	BonusPayment    []*BonusPayment `xml:"BonusPayment,omitempty"`
 }
 
@@ -991,9 +993,9 @@ type QualificationType struct {
 	Keywords                string                   `xml:"Keywords,omitempty"`
 	QualificationTypeStatus *QualificationTypeStatus `xml:"QualificationTypeStatus,omitempty"`
 	Test                    string                   `xml:"Test,omitempty"`
-	TestDurationInSeconds   int64                    `xml:"TestDurationInSeconds,omitempty"`
+	TestDurationInSeconds   int                      `xml:"TestDurationInSeconds,omitempty"`
 	AnswerKey               string                   `xml:"AnswerKey,omitempty"`
-	RetryDelayInSeconds     int64                    `xml:"RetryDelayInSeconds,omitempty"`
+	RetryDelayInSeconds     int                      `xml:"RetryDelayInSeconds,omitempty"`
 	IsRequestable           bool                     `xml:"IsRequestable,omitempty"`
 	AutoGranted             bool                     `xml:"AutoGranted,omitempty"`
 	AutoGrantedValue        int32                    `xml:"AutoGrantedValue,omitempty"`
@@ -1013,10 +1015,10 @@ type CreateQualificationTypeRequest struct {
 	Keywords                string                   `xml:"Keywords,omitempty"`
 	Description             string                   `xml:"Description,omitempty"`
 	QualificationTypeStatus *QualificationTypeStatus `xml:"QualificationTypeStatus,omitempty"`
-	RetryDelayInSeconds     int64                    `xml:"RetryDelayInSeconds,omitempty"`
+	RetryDelayInSeconds     int                      `xml:"RetryDelayInSeconds,omitempty"`
 	Test                    string                   `xml:"Test,omitempty"`
 	AnswerKey               string                   `xml:"AnswerKey,omitempty"`
-	TestDurationInSeconds   int64                    `xml:"TestDurationInSeconds,omitempty"`
+	TestDurationInSeconds   int                      `xml:"TestDurationInSeconds,omitempty"`
 	AutoGranted             bool                     `xml:"AutoGranted,omitempty"`
 	AutoGrantedValue        int32                    `xml:"AutoGrantedValue,omitempty"`
 	ResponseGroup           []string                 `xml:"ResponseGroup,omitempty"`
@@ -1034,16 +1036,16 @@ type GetQualificationRequestsRequest struct {
 	QualificationTypeId string                                `xml:"QualificationTypeId,omitempty"`
 	SortDirection       *SortDirection                        `xml:"SortDirection,omitempty"`
 	SortProperty        *GetQualificationRequestsSortProperty `xml:"SortProperty,omitempty"`
-	PageNumber          int32                                 `xml:"PageNumber,omitempty"`
-	PageSize            int32                                 `xml:"PageSize,omitempty"`
+	PageNumber          int                                   `xml:"PageNumber,omitempty"`
+	PageSize            int                                   `xml:"PageSize,omitempty"`
 	ResponseGroup       []string                              `xml:"ResponseGroup,omitempty"`
 }
 
 type GetQualificationRequestsResult struct {
 	Request              *Request                `xml:"Request,omitempty"`
-	NumResults           int32                   `xml:"NumResults,omitempty"`
-	TotalNumResults      int32                   `xml:"TotalNumResults,omitempty"`
-	PageNumber           int32                   `xml:"PageNumber,omitempty"`
+	NumResults           int                     `xml:"NumResults,omitempty"`
+	TotalNumResults      int                     `xml:"TotalNumResults,omitempty"`
+	PageNumber           int                     `xml:"PageNumber,omitempty"`
 	QualificationRequest []*QualificationRequest `xml:"QualificationRequest,omitempty"`
 }
 
@@ -1128,16 +1130,16 @@ type SearchQualificationTypesRequest struct {
 	MustBeOwnedByCaller bool                                  `xml:"MustBeOwnedByCaller,omitempty"`
 	SortDirection       *SortDirection                        `xml:"SortDirection,omitempty"`
 	SortProperty        *SearchQualificationTypesSortProperty `xml:"SortProperty,omitempty"`
-	PageNumber          int32                                 `xml:"PageNumber,omitempty"`
-	PageSize            int32                                 `xml:"PageSize,omitempty"`
+	PageNumber          int                                   `xml:"PageNumber,omitempty"`
+	PageSize            int                                   `xml:"PageSize,omitempty"`
 	ResponseGroup       []string                              `xml:"ResponseGroup,omitempty"`
 }
 
 type SearchQualificationTypesResult struct {
 	Request           *Request             `xml:"Request,omitempty"`
-	NumResults        int32                `xml:"NumResults,omitempty"`
-	TotalNumResults   int32                `xml:"TotalNumResults,omitempty"`
-	PageNumber        int32                `xml:"PageNumber,omitempty"`
+	NumResults        int                  `xml:"NumResults,omitempty"`
+	TotalNumResults   int                  `xml:"TotalNumResults,omitempty"`
+	PageNumber        int                  `xml:"PageNumber,omitempty"`
 	QualificationType []*QualificationType `xml:"QualificationType,omitempty"`
 }
 
@@ -1147,8 +1149,8 @@ type UpdateQualificationTypeRequest struct {
 	QualificationTypeStatus *QualificationTypeStatus `xml:"QualificationTypeStatus,omitempty"`
 	Test                    string                   `xml:"Test,omitempty"`
 	AnswerKey               string                   `xml:"AnswerKey,omitempty"`
-	TestDurationInSeconds   int64                    `xml:"TestDurationInSeconds,omitempty"`
-	RetryDelayInSeconds     int64                    `xml:"RetryDelayInSeconds,omitempty"`
+	TestDurationInSeconds   int                      `xml:"TestDurationInSeconds,omitempty"`
+	RetryDelayInSeconds     int                      `xml:"RetryDelayInSeconds,omitempty"`
 	AutoGranted             bool                     `xml:"AutoGranted,omitempty"`
 	AutoGrantedValue        int32                    `xml:"AutoGrantedValue,omitempty"`
 	ResponseGroup           []string                 `xml:"ResponseGroup,omitempty"`
@@ -1168,7 +1170,7 @@ type GetAccountBalanceResult struct {
 type GetRequesterStatisticRequest struct {
 	Statistic     *RequesterStatistic `xml:"Statistic,omitempty"`
 	TimePeriod    *TimePeriod         `xml:"TimePeriod,omitempty"`
-	Count         int32               `xml:"Count,omitempty"`
+	Count         int                 `xml:"Count,omitempty"`
 	ResponseGroup []string            `xml:"ResponseGroup,omitempty"`
 }
 
@@ -1176,7 +1178,7 @@ type GetRequesterWorkerStatisticRequest struct {
 	Statistic     *RequesterStatistic `xml:"Statistic,omitempty"`
 	TimePeriod    *TimePeriod         `xml:"TimePeriod,omitempty"`
 	WorkerId      string              `xml:"WorkerId,omitempty"`
-	Count         int32               `xml:"Count,omitempty"`
+	Count         int                 `xml:"Count,omitempty"`
 	ResponseGroup []string            `xml:"ResponseGroup,omitempty"`
 }
 
@@ -1213,16 +1215,16 @@ type DataPoint struct {
 }
 
 type GetBlockedWorkersRequest struct {
-	PageNumber    int32    `xml:"PageNumber,omitempty"`
-	PageSize      int32    `xml:"PageSize,omitempty"`
+	PageNumber    int      `xml:"PageNumber,omitempty"`
+	PageSize      int      `xml:"PageSize,omitempty"`
 	ResponseGroup []string `xml:"ResponseGroup,omitempty"`
 }
 
 type GetBlockedWorkersResult struct {
 	Request         *Request       `xml:"Request,omitempty"`
-	PageNumber      int32          `xml:"PageNumber,omitempty"`
-	NumResults      int32          `xml:"NumResults,omitempty"`
-	TotalNumResults int32          `xml:"TotalNumResults,omitempty"`
+	PageNumber      int            `xml:"PageNumber,omitempty"`
+	NumResults      int            `xml:"NumResults,omitempty"`
+	TotalNumResults int            `xml:"TotalNumResults,omitempty"`
 	WorkerBlock     []*WorkerBlock `xml:"WorkerBlock,omitempty"`
 }
 
