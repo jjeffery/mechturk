@@ -4,6 +4,13 @@
 [![Build status (Windows)](https://ci.appveyor.com/api/projects/status/vcmay27do6wtkrsk?svg=true)](https://ci.appveyor.com/project/jjeffery/mechturk)
 [![license](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/spkg/nullable/master/LICENSE.md)
 
+## No longer under development
+
+This package was developed at a time when there was no officially supported Mechanical Turk SDK for Go.
+AWS have since added support for Mechanical Turk to the [AWS SDK for Go](http://docs.aws.amazon.com/sdk-for-go/api/service/mturk/).
+This package is retained for backwards compatibility, but will not receive any further enhancements. For any new development, 
+use the offically supported SDK instead.
+
 ## SDK
 
 Package mechturk provides a Go SDK for the AWS Mechanical Turk Requester API.
